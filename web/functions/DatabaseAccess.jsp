@@ -11,7 +11,7 @@
 <%@ include file="SiteConfig.jsp" %>
 <%@ include file="SiteUtils.jsp" %>
 <%!
-    public static class DatabaseAccess {
+    static class DatabaseAccess {
         private static String connectString = "jdbc:mysql://" + SiteConfig.db_host + ":" + SiteConfig.db_port + "/" + SiteConfig.db_name
                 + "?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false";
 

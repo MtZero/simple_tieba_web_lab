@@ -11,11 +11,11 @@
 <%@ include file="functions/Json.jsp" %>
 <%@ include file="functions/DatabaseAccess.jsp" %>
 <%!
-    public class json_class {
-        public String data;
-        public String message;
-        public int de;
-    }
+//    public class json_class {
+//        public String data;
+//        public String message;
+//        public int de;
+//    }
 %>
 <%
     request.setCharacterEncoding("utf-8");

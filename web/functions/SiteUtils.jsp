@@ -9,7 +9,7 @@
 <%@ page import="java.util.*, java.sql.*, java.security.MessageDigest" %>
 <%@ page import="java.util.Date" %>
 <%!
-    public static class SiteUtils {
+    static class SiteUtils {
 
         // 获得 MD5 值，32 位小写
         public static String MD5(String input) {
