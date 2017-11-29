@@ -10,7 +10,11 @@ CREATE TABLE `users` (
   PRIMARY KEY (`uid`,`username`),
   UNIQUE KEY `uid_UNIQUE` (`uid`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/* The admin's password should be set manually */
+/* The current password is 1 */
+INSERT INTO `users` (`username`, `password`, `role`) VALUES ('admin', '45d76d8f3ce00ecd799b03a73bf825c8', 99);
 
 CREATE TABLE `posts` (
   `pid` int(11) NOT NULL AUTO_INCREMENT,

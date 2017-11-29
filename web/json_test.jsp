@@ -8,9 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" import="java.util.*, java.sql.*, com.google.gson.Gson" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%--<%@ include file="functions/SiteUtils.jsp"%>--%>
-<%@ include file="functions/Json.jsp"%>
-<%@ include file="functions/DatabaseAccess.jsp"%>
+<%@ include file="functions/Json.jsp" %>
+<%@ include file="functions/DatabaseAccess.jsp" %>
 <%!
     public class json_class {
         public String data;
@@ -20,34 +19,32 @@
 %>
 <%
     request.setCharacterEncoding("utf-8");
-    if (request.getParameter("data") != null) {
-//        Class.forName("com.google.gson");
-        Message json = new Message();
-        Gson gson = new Gson();
-        String json_string = gson.toJson(json);
-        Message new_json = gson.fromJson(json_string, Message.class);
-        out.print(json_string);
-        out.print("<br>");
-        out.print(new_json.state);
-        out.print(new_json.message);
-        out.print("<br>");
-        out.print(new Date().getTime() / 1000);
-        out.print("<br>");
-        DatabaseAccess.EstablishConnection();
-//        DatabaseAccess.addUser("blabla", "1");
-        Long exp = SiteUtils.getTimeStamp();
-        String tok1 = DatabaseAccess.getNewToken("blabla", "1", exp + 100);
-        String tok2 = DatabaseAccess.getNewToken("blabla", "1", exp - 100);
-        out.print(tok1 + "<br>" + tok2 + "<br>");
-        out.print(DatabaseAccess.checkToken("blabla", tok1, exp + 100));
-        out.print(DatabaseAccess.checkToken("blabla", tok2, exp - 100));
-        out.print("<br>");
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String datetime = simpleDateFormat.format(new Date());
-        out.print(datetime + "<br>");
+    Message json = new Message();
+    Gson gson = new Gson();
+    String json_string = gson.toJson(json);
+    Message new_json = gson.fromJson(json_string, Message.class);
+    out.print(json_string);
+    out.print("<br>");
+    out.print(new_json.state);
+    out.print(new_json.message);
+    out.print("<br>");
+    out.print(new Date().getTime() / 1000);
+    out.print("<br>");
+    DatabaseAccess.EstablishConnection();
+//    Long uid = DatabaseAccess.addUser("blablaaa", "1");
+//    out.print("uid: " + uid);
+    Long exp = SiteUtils.getTimeStamp();
+    String tok1 = DatabaseAccess.getNewToken("blabla", "1", exp + 100);
+    String tok2 = DatabaseAccess.getNewToken("blabla", "1", exp - 100);
+    out.print(tok1 + "<br>" + tok2 + "<br>");
+    out.print(DatabaseAccess.checkToken("blabla", tok1, exp + 100));
+    out.print(DatabaseAccess.checkToken("blabla", tok2, exp - 100));
+    out.print("<br>");
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    String datetime = simpleDateFormat.format(new Date());
+    out.print(datetime + "<br>");
 
+    DatabaseAccess.killConnection();
 
-        DatabaseAccess.killConnection();
-    }
     out.print(SiteUtils.MD5("1"));
 %>
