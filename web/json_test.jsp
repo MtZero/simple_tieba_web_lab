@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" import="java.util.*, java.sql.*, com.google.gson.Gson" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%--<%@ include file="functions/SiteUtils.jsp"%>--%>
 <%@ include file="functions/Json.jsp"%>
 <%@ include file="functions/DatabaseAccess.jsp"%>
@@ -37,9 +38,16 @@
         Long exp = SiteUtils.getTimeStamp();
         String tok1 = DatabaseAccess.getNewToken("blabla", "1", exp + 100);
         String tok2 = DatabaseAccess.getNewToken("blabla", "1", exp - 100);
+        out.print(tok1 + "<br>" + tok2 + "<br>");
         out.print(DatabaseAccess.checkToken("blabla", tok1, exp + 100));
         out.print(DatabaseAccess.checkToken("blabla", tok2, exp - 100));
         out.print("<br>");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String datetime = simpleDateFormat.format(new Date());
+        out.print(datetime + "<br>");
+
+
+        DatabaseAccess.killConnection();
     }
     out.print(SiteUtils.MD5("1"));
 %>
