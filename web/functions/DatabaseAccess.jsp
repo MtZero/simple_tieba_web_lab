@@ -358,6 +358,8 @@
                             resultSet.getString("p_content"),
                             resultSet.getString("p_datetime"),
                             resultSet.getLong("p_floor"),
+                            resultSet.getLong("r_uid"),
+                            resultSet.getString("r_datetime"),
                             resultSet.getInt("state"));
                     resultSet.close();
                     preparedStatement.close();
@@ -372,6 +374,36 @@
         }
 
         // 获得早于某时间的 N 篇帖子
+        public static Json.Posts getPosts(String datetime, Integer limit) {
+            if (datetime == null) datetime = simpleDateFormat.format(new Date());
+            if (limit == null) limit = 10;
+            try {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("SELECT * FROM `posts` WHERE `p_datetime` < ? AND `state` = 0 LIMIT ?");
+                preparedStatement.setString(1, datetime);
+                preparedStatement.setInt(2, limit);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                Json.Posts posts = new Json.Posts();
+                while (resultSet.next()) {
+                    Json.Post post = new Json.Post(resultSet.getLong("pid"),
+                            resultSet.getLong("uid"),
+                            getUsernameByUid(resultSet.getLong("uid")),
+                            resultSet.getString("p_content"),
+                            resultSet.getString("p_datetime"),
+                            resultSet.getLong("p_floor"),
+                            resultSet.getLong("r_uid"),
+                            resultSet.getString("r_datetime"),
+                            resultSet.getInt("state"));
+                    posts.posts.add(post);
+                }
+                resultSet.close();
+                preparedStatement.close();
+                return posts;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 %>
 <%

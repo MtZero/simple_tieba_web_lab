@@ -51,6 +51,9 @@
             public String p_content;
             public String p_datetime;
             public Long p_floor;
+            // r_uid and r_datetime should be se value manually
+            public Long r_uid;
+            public String r_datetime;
             public Integer state;
 
             public Post() {
@@ -60,23 +63,27 @@
                 p_content = null;
                 p_datetime = null;
                 p_floor = null;
+                r_uid = null;
+                r_datetime = null;
                 state = null;
             }
 
-            public Post(Long pid, Long uid, String username, String p_content, String p_datetime, Long p_floor, Integer state) {
+            public Post(Long pid, Long uid, String username, String p_content, String p_datetime, Long p_floor, Long r_uid, String r_datetime, Integer state) {
                 this.pid = pid;
                 this.uid = uid;
                 this.username = username;
                 this.p_content = p_content;
                 this.p_datetime = p_datetime;
                 this.p_floor = p_floor;
+                this.r_uid = r_uid;
+                this.r_datetime = r_datetime;
                 this.state = state;
             }
         }
 
         // 多篇帖子模板类
         static class Posts {
-            public List<Long> pids;
+            public ArrayList<Post> posts = new ArrayList<>();
         }
 
         // 用户模板类
