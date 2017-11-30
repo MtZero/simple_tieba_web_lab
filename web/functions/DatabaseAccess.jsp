@@ -53,16 +53,19 @@
                                 Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setString(1, SiteUtils.HtmlFilter(username));
                 preparedStatement.setString(2, SiteUtils.MD5(password + SiteConfig.passwd_salt));
-                int effectedRows = preparedStatement.executeUpdate();
-                if (effectedRows > 0) {
+                int affectedRows = preparedStatement.executeUpdate();
+                if (affectedRows > 0) {
                     ResultSet resultSet = preparedStatement.getGeneratedKeys();
                     if (resultSet.next()) {
                         Long uid = resultSet.getLong(1);
                         resultSet.close();
                         preparedStatement.close();
                         return uid;
+                    } else {
+                        resultSet.close();
+                        preparedStatement.close();
                     }
-                }
+                } else preparedStatement.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -83,9 +86,9 @@
                             connection.prepareStatement("UPDATE `users` SET `role` = -1 WHERE `uid` = ?");
                     preparedStatement.setLong(1, (Long) user);
                 } else throw new Exception("The type of the argument should be String or Long.");
-                int effectedRows = preparedStatement.executeUpdate();
+                int affectedRows = preparedStatement.executeUpdate();
                 preparedStatement.close();
-                return effectedRows > 0;
+                return affectedRows > 0;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -105,6 +108,32 @@
                     resultSet.close();
                     preparedStatement.close();
                     return uid;
+                } else {
+                    resultSet.close();
+                    preparedStatement.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        // 从 uid 得到用户名
+        public static String getUsernameByUid(Long uid) {
+            if (uid == null) return null;
+            try {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("SELECT `username` FROM `users` WHERE `uid` = ?");
+                preparedStatement.setLong(1, uid);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    String username = resultSet.getString("username");
+                    resultSet.close();
+                    preparedStatement.close();
+                    return username;
+                } else {
+                    resultSet.close();
+                    preparedStatement.close();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -150,6 +179,9 @@
                     resultSet.close();
                     preparedStatement.close();
                     return true;
+                } else {
+                    resultSet.close();
+                    preparedStatement.close();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -178,6 +210,9 @@
                     resultSet.close();
                     preparedStatement.close();
                     return level;
+                } else {
+                    resultSet.close();
+                    preparedStatement.close();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -217,6 +252,9 @@
                     resultSet.close();
                     preparedStatement.close();
                     return SiteUtils.MD5(username + expiration + SiteConfig.token_salt);
+                } else {
+                    resultSet.close();
+                    preparedStatement.close();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -234,32 +272,35 @@
 
         // 发新贴
         public static Long newPost(Object user, String content) {
-            if (validUser(user, null)) {
-                Long uid;
-                if (String.class.isInstance(user)) uid = getUidByUsername((String) user);
-                else uid = (Long) user;
-                content = SiteUtils.HtmlFilter(content);
-                try {
-                    PreparedStatement preparedStatement =
-                            connection.prepareStatement("INSERT INTO `posts` (`uid`, `p_content`, `p_datetime`) VALUES (?, ?, ?)",
-                                    Statement.RETURN_GENERATED_KEYS);
-                    String p_datetime = simpleDateFormat.format(new Date());
-                    preparedStatement.setLong(1, uid);
-                    preparedStatement.setString(2, content);
-                    preparedStatement.setString(3, p_datetime);
-                    Integer affectedRows = preparedStatement.executeUpdate();
-                    if (affectedRows > 0) {
-                        ResultSet resultSet = preparedStatement.getGeneratedKeys();
-                        if (resultSet.next()) {
-                            Long pid = resultSet.getLong(1);
-                            resultSet.close();
-                            preparedStatement.close();
-                            return pid;
-                        }
+            Long uid;
+            if (String.class.isInstance(user)) uid = getUidByUsername((String) user);
+            else uid = (Long) user;
+            content = SiteUtils.HtmlFilter(content);
+            try {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("INSERT INTO `posts` (`uid`, `p_content`, `p_datetime`) VALUES (?, ?, ?)",
+                                Statement.RETURN_GENERATED_KEYS);
+                String p_datetime = simpleDateFormat.format(new Date());
+                preparedStatement.setLong(1, uid);
+                preparedStatement.setString(2, content);
+                preparedStatement.setString(3, p_datetime);
+                Integer affectedRows = preparedStatement.executeUpdate();
+                if (affectedRows > 0) {
+                    ResultSet resultSet = preparedStatement.getGeneratedKeys();
+                    if (resultSet.next()) {
+                        Long pid = resultSet.getLong(1);
+                        resultSet.close();
+                        preparedStatement.close();
+                        return pid;
+                    } else {
+                        resultSet.close();
+                        preparedStatement.close();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } else {
+                    preparedStatement.close();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             return -1L;
         }
@@ -302,6 +343,35 @@
             return false;
         }
 
+        // 获得某篇帖子
+        public static Json.Post getPostByPid(Long pid) {
+            if (pid == null) return null;
+            try {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("SELECT * FROM `posts` WHERE `pid` = ?");
+                preparedStatement.setLong(1, pid);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    Json.Post post = new Json.Post(pid,
+                            resultSet.getLong("uid"),
+                            getUsernameByUid(resultSet.getLong("uid")),
+                            resultSet.getString("p_content"),
+                            resultSet.getString("p_datetime"),
+                            resultSet.getLong("p_floor"),
+                            resultSet.getInt("state"));
+                    resultSet.close();
+                    preparedStatement.close();
+                    return post;
+                } else {
+                    preparedStatement.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        // 获得早于某时间的 N 篇帖子
     }
 %>
 <%

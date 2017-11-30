@@ -19,14 +19,15 @@
 %>
 <%
     request.setCharacterEncoding("utf-8");
-    Message json = new Message();
+    Json.Message json1 = new Json.Message("0", null);
+    Json.Message json2 = new Json.Message("2", "hahaha");
     Gson gson = new Gson();
-    String json_string = gson.toJson(json);
-    Message new_json = gson.fromJson(json_string, Message.class);
+    String json_string = gson.toJson(json1);
+    Json.Message new_json = gson.fromJson(json_string, Json.Message.class);
     out.print(json_string);
     out.print("<br>");
-    out.print(new_json.state);
-    out.print(new_json.message);
+    out.print(json2.state);
+    out.print(json2.message);
     out.print("<br>");
     out.print(new Date().getTime() / 1000);
     out.print("<br>");
@@ -46,5 +47,16 @@
 
     DatabaseAccess.killConnection();
 
-    out.print(SiteUtils.MD5("1"));
+    out.print(SiteUtils.MD5("1")+"<br>");
+
+    Json.Messages jsons = new Json.Messages();
+    jsons.states.add("0");
+    jsons.states.add("1");
+    jsons.messages.add("012");
+    jsons.messages.add("123");
+    String jsons_string = gson.toJson(jsons);
+    out.print(jsons_string + "<br>");
+    Json.Messages new_jsons = gson.fromJson(jsons_string, Json.Messages.class);
+    out.print(new_jsons);
+
 %>
