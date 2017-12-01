@@ -85,7 +85,7 @@
                     preparedStatement =
                             connection.prepareStatement("UPDATE `users` SET `role` = -1 WHERE `uid` = ?");
                     preparedStatement.setLong(1, (Long) user);
-                } else throw new Exception("The type of the argument should be String or Long.");
+                } else throw new IllegalArgumentException("The type of the argument should be String or Long.");
                 int affectedRows = preparedStatement.executeUpdate();
                 preparedStatement.close();
                 return affectedRows > 0;
@@ -173,7 +173,7 @@
                             connection.prepareStatement("SELECT * FROM `users` WHERE `uid` = ? AND `role` >= ?");
                     preparedStatement.setLong(1, (Long) user);
                     preparedStatement.setInt(2, role);
-                } else throw new Exception("The type of the argument should be String or Long.");
+                } else throw new IllegalArgumentException("The type of the argument should be String or Long.");
                 resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     resultSet.close();
@@ -203,7 +203,7 @@
                     preparedStatement =
                             connection.prepareStatement("SELECT `role` FROM `users` WHERE `uid` = ?");
                     preparedStatement.setLong(1, (Long) user);
-                } else throw new Exception("The type of the argument should be String or Long.");
+                } else throw new IllegalArgumentException("The type of the argument should be String or Long.");
                 resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     Integer level = resultSet.getInt("role");
@@ -401,12 +401,12 @@
         }
 
         // 获得早于某时间的 N 篇帖子
-        public static Json.Posts getPosts(String datetime, Integer limit) {
+        public static Json.Posts getPostsEarlierBy(String datetime, Integer limit) {
             if (datetime == null) datetime = simpleDateFormat.format(new Date());
             if (limit == null) limit = 10;
             try {
                 PreparedStatement preparedStatement =
-                        connection.prepareStatement("SELECT * FROM `posts` WHERE `p_datetime` < ? AND `state` = 0 LIMIT ?");
+                        connection.prepareStatement("SELECT * FROM `posts` WHERE `r_datetime` < ? AND `state` = 0 LIMIT ?");
                 preparedStatement.setString(1, datetime);
                 preparedStatement.setInt(2, limit);
                 ResultSet resultSet = preparedStatement.executeQuery();
@@ -480,6 +480,93 @@
             }
             return null;
         }
+
+        // 删除回复（伪删除，通过 cid）
+        public static Boolean deleteCommentByCid(Long cid) {
+            if (cid == null) return false;
+            try {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("UPDATE `comments` SET `state` = 1 WHERE `cid` = ?");
+                preparedStatement.setLong(1, cid);
+                Integer affectedRows = preparedStatement.executeUpdate();
+                if (affectedRows > 0) {
+                    preparedStatement.close();
+                    return true;
+                } else {
+                    preparedStatement.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        // 删除回复（伪删除，通过 pid 和 floor）
+        public static Boolean deleteCommentByPidAndFloor(Long pid, Long c_floor) {
+            if (pid == null || c_floor == null) return false;
+            try {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("UPDATE `comments` SET `state` = 1 WHERE `pid` = ? AND `c_floor` = ?");
+                preparedStatement.setLong(1, pid);
+                preparedStatement.setLong(2, c_floor);
+                Integer affectedRows = preparedStatement.executeUpdate();
+                if (affectedRows > 0) {
+                    preparedStatement.close();
+                    return true;
+                } else {
+                    preparedStatement.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        // 获得回复（通过 cid）
+        public static Json.Comment getCommentByCid(Long cid) {
+            if (cid == null) return null;
+            try {
+                // TODO
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        // 获得回复（通过 pid 和 floor）
+        public static Json.Comment getCommentByPidAndFloor(Long pid, Long c_floor) {
+            if (pid == null || c_floor == null) return null;
+            try {
+                // TODO
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        // 获得某帖子下的所有回复（时间顺序）
+        public static Json.Comments getCommentsOrderByTimeAsc(Long pid) {
+            if (pid == null) return null;
+            try {
+                // TODO
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        // 获得某帖子下的所有回复（时间倒序）
+        public static Json.Comments getCommentsOrderByTimeDesc(Long pid) {
+            if (pid == null) return null;
+            try {
+                // TODO
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        // 获得某帖子下某时间点之前的
     }
 %>
 <%
