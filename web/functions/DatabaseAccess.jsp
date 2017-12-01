@@ -239,8 +239,8 @@
 //        }
 
         // 获取新 token
-        public static String getNewToken(String username, String password, Long expiration) {
-            if (username == null || password == null || expiration == null) return "";
+        public static Json.Token getNewToken(String username, String password, Long expiration) {
+            if (username == null || password == null || expiration == null) return null;
             try {
                 String encryptedPassword = SiteUtils.MD5(password + SiteConfig.passwd_salt);
                 PreparedStatement preparedStatement =
@@ -251,7 +251,9 @@
                 if (resultSet.next()) {
                     resultSet.close();
                     preparedStatement.close();
-                    return SiteUtils.MD5(username + expiration + SiteConfig.token_salt);
+                    return new Json.Token(username,
+                            SiteUtils.MD5(username + expiration + SiteConfig.token_salt),
+                            expiration);
                 } else {
                     resultSet.close();
                     preparedStatement.close();
@@ -259,14 +261,18 @@
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return "";
+            return null;
         }
 
         // 检验 Token 有效性
-        public static Boolean checkToken(String username, String token, Long expiration) {
-            if (username == null || token == null || expiration == null) return false;
+        public static Boolean checkToken(Json.Token token) {
+            if (token == null) return false;
+            String username = token.username;
+            String tokenStr = token.token;
+            Long expiration = token.expiration;
+            if (username == null || tokenStr == null || expiration == null) return false;
             if (!validUser(username, null)) return false;
-            return token.equals(SiteUtils.MD5(username + expiration + SiteConfig.token_salt))
+            return tokenStr.equals(SiteUtils.MD5(username + expiration + SiteConfig.token_salt))
                     && (expiration > SiteUtils.getTimeStamp());
         }
 
@@ -355,6 +361,7 @@
                     Json.Post post = new Json.Post(pid,
                             resultSet.getLong("uid"),
                             getUsernameByUid(resultSet.getLong("uid")),
+                            resultSet.getString("p_title"),
                             resultSet.getString("p_content"),
                             resultSet.getString("p_datetime"),
                             resultSet.getLong("p_floor"),
@@ -366,6 +373,26 @@
                     return post;
                 } else {
                     preparedStatement.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        // 获取某篇帖子的楼层数
+        public static Long getFloorsByPid(Long pid) {
+            if (pid == null) return null;
+            try {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("SELECT `p_floor` FROM `posts` WHERE `pid` = ?");
+                preparedStatement.setLong(1, pid);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    Long floors = resultSet.getLong("p_floor");
+                    resultSet.close();
+                    preparedStatement.close();
+                    return floors;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -388,6 +415,7 @@
                     Json.Post post = new Json.Post(resultSet.getLong("pid"),
                             resultSet.getLong("uid"),
                             getUsernameByUid(resultSet.getLong("uid")),
+                            resultSet.getString("p_title"),
                             resultSet.getString("p_content"),
                             resultSet.getString("p_datetime"),
                             resultSet.getLong("p_floor"),
@@ -399,6 +427,54 @@
                 resultSet.close();
                 preparedStatement.close();
                 return posts;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        // 发回复，返回 cid
+        public static Long addComment(Json.Comment comment) {
+            if (comment == null) return null;
+            Long pid = comment.pid;
+            Long uid = comment.uid;
+            Long r_floor = comment.r_floor;
+            String c_content = comment.c_content;
+            String c_datetime = simpleDateFormat.format(new Date());
+            if (pid == null || uid == null || c_content == null) return null;
+            PreparedStatement preparedStatement;
+            ResultSet resultSet;
+            try {
+                if (r_floor == null) {
+                    preparedStatement =
+                            connection.prepareStatement("INSERT INTO `comments` (`pid`, `uid`, `c_content`, `c_datetime`) VALUES (?, ?, ?, ?)",
+                                    Statement.RETURN_GENERATED_KEYS);
+                    preparedStatement.setLong(1, pid);
+                    preparedStatement.setLong(2, uid);
+                    preparedStatement.setString(3, c_content);
+                    preparedStatement.setString(4, c_datetime);
+                    Integer affectedRows = preparedStatement.executeUpdate();
+                    if (affectedRows > 0) {
+                        resultSet = preparedStatement.getGeneratedKeys();
+                        if (resultSet.next()) {
+                            Long cid = resultSet.getLong(1);
+                            resultSet.close();
+                            preparedStatement.close();
+                            return cid;
+                        }
+                    } else {
+                        preparedStatement.close();
+                        return null;
+                    }
+                } else {
+                    preparedStatement =
+                            connection.prepareStatement("INSERT INTO `comments` (`pid`, `uid`, `c_content`, `c_datetime`, `r_floor`) VALUES (?, ?, ?, ?, ?)");
+                    preparedStatement.setLong(1, pid);
+                    preparedStatement.setLong(2, uid);
+                    preparedStatement.setString(3, c_content);
+                    preparedStatement.setString(4, c_datetime);
+                    preparedStatement.setLong(5, r_floor);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -20,14 +20,14 @@
 <%
     request.setCharacterEncoding("utf-8");
     Json.Message json1 = new Json.Message("0", null);
-    Json.Message json2 = new Json.Message("2", "hahaha");
+    Json.Message json2 = new Json.Message("2", "haha\nha");
     Gson gson = new Gson();
     String json_string = gson.toJson(json1);
     Json.Message new_json = gson.fromJson(json_string, Json.Message.class);
     out.print(json_string);
     out.print("<br>");
     out.print(json2.state);
-    out.print(json2.message);
+    out.print(json2.message.replaceAll("\n", "<br>"));
     out.print("<br>");
     out.print(new Date().getTime() / 1000);
     out.print("<br>");
@@ -35,11 +35,11 @@
 //    Long uid = DatabaseAccess.addUser("blablaaa", "1");
 //    out.print("uid: " + uid);
     Long exp = SiteUtils.getTimeStamp();
-    String tok1 = DatabaseAccess.getNewToken("blabla", "1", exp + 100);
-    String tok2 = DatabaseAccess.getNewToken("blabla", "1", exp - 100);
-    out.print(tok1 + "<br>" + tok2 + "<br>");
-    out.print(DatabaseAccess.checkToken("blabla", tok1, exp + 100));
-    out.print(DatabaseAccess.checkToken("blabla", tok2, exp - 100));
+    Json.Token tok1 = DatabaseAccess.getNewToken("blabla", "1", exp + 100);
+    Json.Token tok2 = DatabaseAccess.getNewToken("blabla", "1", exp - 100);
+    out.print(tok1.token + "<br>" + tok2.token + "<br>");
+    out.print(DatabaseAccess.checkToken(new Json.Token("blabla", tok1.token, exp + 100)));
+    out.print(DatabaseAccess.checkToken(new Json.Token("blabla", tok2.token, exp - 100)));
     out.print("<br>");
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String datetime = simpleDateFormat.format(new Date());
