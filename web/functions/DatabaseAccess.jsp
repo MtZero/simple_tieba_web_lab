@@ -8,8 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.*, java.sql.*" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ include file="SiteConfig.jsp" %>
 <%@ include file="SiteUtils.jsp" %>
+<%@ include file="Json.jsp"%>
 <%!
     static class DatabaseAccess {
         private static String connectString = "jdbc:mysql://" + SiteConfig.db_host + ":" + SiteConfig.db_port + "/" + SiteConfig.db_name
@@ -18,6 +20,8 @@
         private static Connection connection;
 
         private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        //private Json json = new Json();
 
         // 建立数据库连接
         public static Boolean EstablishConnection() {
@@ -42,11 +46,10 @@
             return false;
         }
 
-        // TODO 各功能模块
-
         // 添加用户
         public static Long addUser(String username, String password) {
             if (username == null || password == null) return null;
+            if (username.equals("")) return null;
             try {
                 PreparedStatement preparedStatement =
                         connection.prepareStatement("INSERT INTO `users` (`username`, `password`) VALUES (?, ?)",
@@ -70,6 +73,24 @@
                 e.printStackTrace();
             }
             return null;
+        }
+
+        // 修改用户
+        public static Boolean modifyUser(Json.User user) {
+            if (user == null) return null;
+            try {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("UPDATE `users` SET `password` = ?, `role` = ?, `avatar` = ? WHERE `uid` = ?");
+                preparedStatement.setString(1, SiteUtils.MD5(user.password + SiteConfig.passwd_salt));
+                preparedStatement.setInt(2, user.role);
+                preparedStatement.setString(3, user.avatar);
+                preparedStatement.setLong(4, user.uid);
+                int affectedRows = preparedStatement.executeUpdate();
+                return affectedRows > 0;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return false;
         }
 
         // 删除用户（伪删除）
@@ -131,6 +152,33 @@
                     resultSet.close();
                     preparedStatement.close();
                     return username;
+                } else {
+                    resultSet.close();
+                    preparedStatement.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        // 用 uid 获取用户信息
+        public static Json.User getUserByUid(Long uid) {
+            if (uid == null) return null;
+            try {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("SELECT * FROM `users` WHERE `uid` = ?");
+                preparedStatement.setLong(1, uid);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    Json.User user = new Json.User(resultSet.getLong("uid"),
+                            resultSet.getString("username"),
+                            resultSet.getString("password"),
+                            resultSet.getInt("role"),
+                            resultSet.getString("avatar"));
+                    resultSet.close();
+                    preparedStatement.close();
+                    return user;
                 } else {
                     resultSet.close();
                     preparedStatement.close();
@@ -589,7 +637,26 @@
         public static Json.Comments getCommentsOrderByTimeAsc(Long pid) {
             if (pid == null) return null;
             try {
-                // TODO
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("SELECT * FROM `comments` WHERE `pid` = ? ORDER BY `c_datetime` ASC");
+                preparedStatement.setLong(1, pid);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                Json.Comments comments = new Json.Comments();
+                while (resultSet.next()) {
+                    Json.Comment comment = new Json.Comment(resultSet.getLong("cid"),
+                            resultSet.getLong("pid"),
+                            resultSet.getLong("uid"),
+                            getUsernameByUid(resultSet.getLong("uid")),
+                            resultSet.getLong("C_floor"),
+                            resultSet.getLong("r_floor"),
+                            resultSet.getString("c_comment"),
+                            resultSet.getString("c_datetime"),
+                            resultSet.getInt("state"));
+                    comments.comments.add(comment);
+                }
+                resultSet.close();
+                preparedStatement.close();
+                return comments;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -600,7 +667,26 @@
         public static Json.Comments getCommentsOrderByTimeDesc(Long pid) {
             if (pid == null) return null;
             try {
-                // TODO
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("SELECT * FROM `comments` WHERE `pid` = ? ORDER BY `c_datetime` DESC");
+                preparedStatement.setLong(1, pid);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                Json.Comments comments = new Json.Comments();
+                while (resultSet.next()) {
+                    Json.Comment comment = new Json.Comment(resultSet.getLong("cid"),
+                            resultSet.getLong("pid"),
+                            resultSet.getLong("uid"),
+                            getUsernameByUid(resultSet.getLong("uid")),
+                            resultSet.getLong("C_floor"),
+                            resultSet.getLong("r_floor"),
+                            resultSet.getString("c_comment"),
+                            resultSet.getString("c_datetime"),
+                            resultSet.getInt("state"));
+                    comments.comments.add(comment);
+                }
+                resultSet.close();
+                preparedStatement.close();
+                return comments;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -609,6 +695,7 @@
 
         // 获得某帖子下某时间点之前的
     }
+
 %>
 <%
     request.setCharacterEncoding("utf-8");

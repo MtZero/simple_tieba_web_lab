@@ -15,6 +15,7 @@
         static class Message {
             public String state;
             public String message;
+            public Object data;
 
             public Message() {
                 state = "0";
@@ -24,6 +25,13 @@
             public Message(String state, String message) {
                 this.state = state;
                 this.message = message;
+                this.data = null;
+            }
+
+            public Message(String state, String message, Object data) {
+                this.state = state;
+                this.message = message;
+                this.data = data;
             }
         }
 
@@ -40,12 +48,14 @@
             // 密码为原文或密文，取决于数据来自客户端或数据库
             public String password;
             public Integer role;
+            public String avatar;
 
             public User() {
                 uid = null;
                 username = null;
                 password = null;
                 role = null;
+                avatar = null;
             }
 
             public User(Long uid, String username, String password, Integer role) {
@@ -53,6 +63,15 @@
                 this.username = username;
                 this.password = password;
                 this.role = role;
+                this.avatar = SiteConfig.avatar_path + "default.png";
+            }
+
+            public User(Long uid, String username, String password, Integer role, String avatar) {
+                this.uid = uid;
+                this.username = username;
+                this.password = password;
+                this.role = role;
+                this.avatar = SiteConfig.avatar_path + avatar;
             }
         }
 

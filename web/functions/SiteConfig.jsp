@@ -16,6 +16,7 @@
         public static String site_url = "localhost:8080";
         public static String passwd_salt = "KmZn?yQ67^u=2ccvIaQ-4<PIe9HqBK*,";
         public static String token_salt = "SL,uVbwl{!!9/_:J/W2sF{@Xc.NTG*Mk";
+        public static String avatar_path = "uploads/avatar/";
     }
 %>
 <%

@@ -8,7 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" import="java.util.*, java.sql.*, com.google.gson.Gson" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ include file="functions/Json.jsp" %>
+<%@ page import="com.google.gson.GsonBuilder" %>
+<%--<%@ include file="functions/Json.jsp" %>--%>
 <%@ include file="functions/DatabaseAccess.jsp" %>
 <%!
 //    public class json_class {
@@ -32,13 +33,13 @@
     out.print(new Date().getTime() / 1000);
     out.print("<br>");
     DatabaseAccess.EstablishConnection();
-//    Long uid = DatabaseAccess.addUser("blablaaa", "1");
+//    Long uid = DatabaseAccess.addUser("blablaaaaaa", "1");
 //    out.print("uid: " + uid);
     Long exp = SiteUtils.getTimeStamp();
-    Json.Token tok1 = DatabaseAccess.getNewToken("blabla", "1", exp + 100);
+    Json.Token tok1 = DatabaseAccess.getNewToken("blabla", "1", exp + 10000000);
     Json.Token tok2 = DatabaseAccess.getNewToken("blabla", "1", exp - 100);
     out.print(tok1.token + "<br>" + tok2.token + "<br>");
-    out.print(DatabaseAccess.checkToken(new Json.Token("blabla", tok1.token, exp + 100)));
+    out.print(DatabaseAccess.checkToken(new Json.Token("blabla", tok1.token, exp + 10000000)));
     out.print(DatabaseAccess.checkToken(new Json.Token("blabla", tok2.token, exp - 100)));
     out.print("<br>");
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -57,6 +58,8 @@
     String jsons_string = gson.toJson(jsons);
     out.print(jsons_string + "<br>");
     Json.Messages new_jsons = gson.fromJson(jsons_string, Json.Messages.class);
-    out.print(new_jsons);
+    out.print(new_jsons+"<br>");
+    Gson gson2 = new GsonBuilder().create();
+    out.print(gson2.toJson(new Json.Message("0", "", tok1)));
 
 %>
