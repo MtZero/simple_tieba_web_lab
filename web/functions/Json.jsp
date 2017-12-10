@@ -126,6 +126,7 @@
             public Long cid;
             public Long pid;
             public Long uid;
+            public String username;
             public Long c_floor;
             public Long r_floor;
             public String c_content;
@@ -136,6 +137,7 @@
                 cid = null;
                 pid = null;
                 uid = null;
+                username = null;
                 c_floor = null;
                 r_floor = null;
                 c_content = null;
@@ -143,10 +145,12 @@
                 state = null;
             }
 
-            public Comment(Long cid, Long pid, Long uid, Long c_floor, Long r_floor, String c_content, String c_datetime, Integer state) {
+            public Comment(Long cid, Long pid, Long uid, String username, Long c_floor, Long r_floor,
+                           String c_content, String c_datetime, Integer state) {
                 this.cid = cid;
                 this.pid = pid;
                 this.uid = uid;
+                this.username = username;
                 this.c_floor = c_floor;
                 this.r_floor = r_floor;
                 this.c_content = c_content;

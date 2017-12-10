@@ -526,7 +526,27 @@
         public static Json.Comment getCommentByCid(Long cid) {
             if (cid == null) return null;
             try {
-                // TODO
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("SELECT * FROM `comments` WHERE `cid` = ?");
+                preparedStatement.setLong(1, cid);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    Json.Comment comment = new Json.Comment(resultSet.getLong("cid"),
+                            resultSet.getLong("pid"),
+                            resultSet.getLong("uid"),
+                            getUsernameByUid(resultSet.getLong("uid")),
+                            resultSet.getLong("C_floor"),
+                            resultSet.getLong("r_floor"),
+                            resultSet.getString("c_comment"),
+                            resultSet.getString("c_datetime"),
+                            resultSet.getInt("state"));
+                    resultSet.close();
+                    preparedStatement.close();
+                    return comment;
+                } else {
+                    resultSet.close();
+                    preparedStatement.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -537,7 +557,28 @@
         public static Json.Comment getCommentByPidAndFloor(Long pid, Long c_floor) {
             if (pid == null || c_floor == null) return null;
             try {
-                // TODO
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("SELECT * FROM `comments` WHERE `pid` = ? AND `c_floor` = ?");
+                preparedStatement.setLong(1, pid);
+                preparedStatement.setLong(2, c_floor);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    Json.Comment comment = new Json.Comment(resultSet.getLong("cid"),
+                            resultSet.getLong("pid"),
+                            resultSet.getLong("uid"),
+                            getUsernameByUid(resultSet.getLong("uid")),
+                            resultSet.getLong("C_floor"),
+                            resultSet.getLong("r_floor"),
+                            resultSet.getString("c_comment"),
+                            resultSet.getString("c_datetime"),
+                            resultSet.getInt("state"));
+                    resultSet.close();
+                    preparedStatement.close();
+                    return comment;
+                } else {
+                    resultSet.close();
+                    preparedStatement.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
