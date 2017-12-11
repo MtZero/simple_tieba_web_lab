@@ -36,6 +36,10 @@
         Json.User user = null;
         Json.Post post = null;
         Json.Comment comment = null;
+        Json.Posts posts = null;
+        Json.PostsRequest postsRequest = null;
+        Json.Comments comments = null;
+        Long pid;
 
         if (token_json != null) {
             token = gson.fromJson(token_json, Json.Token.class);
@@ -112,7 +116,7 @@
                 case "new_post":  // 发新帖
                     if (DatabaseAccess.checkToken(token)) {
                         post = gson.fromJson(data, Json.Post.class);
-                        Long pid = DatabaseAccess.newPost(token.username, post.p_title, post.p_content);
+                        pid = DatabaseAccess.newPost(token.username, post.p_title, post.p_content);
                         if (pid != null) {
                             out.print(gson.toJson(new Json.Message()));
                         } else {
@@ -167,8 +171,49 @@
                     }
                     break;
 
+                case "get_post_by_pid":
+                    pid = gson.fromJson(data, Json.Post.class).pid;
+                    post = DatabaseAccess.getPostByPid(pid);
+                    if (post != null) {
+                        out.print(gson.toJson(new Json.Message("0", "", post)));
+                    } else {
+                        out.print(gson.toJson(new Json.Message("1", "No such post!")));
+                    }
+                    break;
+
+                case "get_posts_by_time":
+                    postsRequest = gson.fromJson(data, Json.PostsRequest.class);
+                    posts = DatabaseAccess.getPostsEarlierBy(postsRequest.datetime, postsRequest.limit);
+                    if (posts != null) {
+                        out.print(gson.toJson(new Json.Message("0", "", posts)));
+                    } else {
+                        out.print(gson.toJson(new Json.Message("1", "Failed to get posts!")));
+                    }
+                    break;
+
+                case "get_comments_desc":
+                    post = gson.fromJson(data, Json.Post.class);
+                    pid = post.pid;
+                    Integer state = DatabaseAccess.getPostState(pid);
+                    if (state != null) {
+                        if (state == 0) {
+                            comments = DatabaseAccess.getCommentsOrderByTimeDesc(pid);
+                            if (comments != null) {
+                                out.print(gson.toJson(new Json.Message("0", "", comments)));
+                            } else {
+                                out.print(gson.toJson(new Json.Message("1", "Failed to get comments!")));
+                            }
+                        } else {
+                            out.print(gson.toJson(new Json.Message("1", "No such post!")));
+                        }
+                    } else {
+                        out.print(gson.toJson(new Json.Message("1", "No such post!")));
+                    }
+                    break;
+
                 default:
                     break;
+
             }
             DatabaseAccess.killConnection();
         } else {

@@ -641,7 +641,7 @@
             if (pid == null) return null;
             try {
                 PreparedStatement preparedStatement =
-                        connection.prepareStatement("SELECT * FROM `comments` WHERE `pid` = ? ORDER BY `c_datetime` ASC");
+                        connection.prepareStatement("SELECT * FROM `comments` WHERE `pid` = ? AND `state` = 0 ORDER BY `c_datetime` ASC");
                 preparedStatement.setLong(1, pid);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 Json.Comments comments = new Json.Comments();
@@ -671,7 +671,7 @@
             if (pid == null) return null;
             try {
                 PreparedStatement preparedStatement =
-                        connection.prepareStatement("SELECT * FROM `comments` WHERE `pid` = ? ORDER BY `c_datetime` DESC");
+                        connection.prepareStatement("SELECT * FROM `comments` WHERE `pid` = ? AND `state` = 0 ORDER BY `c_datetime` DESC");
                 preparedStatement.setLong(1, pid);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 Json.Comments comments = new Json.Comments();
