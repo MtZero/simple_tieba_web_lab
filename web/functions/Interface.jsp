@@ -31,13 +31,17 @@
         String intent = request.getParameter("intent");
         // 获得客户端的 token（如果有）
         String token_json = request.getHeader("token");
+
         Json.Token token = null;
         Json.User user = null;
+        Json.Post post = null;
+        Json.Comment comment = null;
+
         if (token_json != null) {
             token = gson.fromJson(token_json, Json.Token.class);
         }
         if (intent != null && !data.equals("")) {
-            DatabaseAccess.EstablishConnection();
+            DatabaseAccess.establishConnection();
             switch (intent) {
                 case "register":  // 注册新用户
                     user = gson.fromJson(data, Json.User.class);
@@ -81,7 +85,7 @@
                             if (state) {
                                 out.print(gson.toJson(new Json.Message()));
                             } else {
-                                out.print(gson.toJson(new Json.Message("1", "Failed to delete.")));
+                                out.print(gson.toJson(new Json.Message("1", "Failed to delete!")));
                             }
                         } else {
                             out.print(gson.toJson(new Json.Message("1", "You are not able to delete users!")));
@@ -102,6 +106,64 @@
                         out.print(gson.toJson(new Json.Message("0", "", newToken)));
                     } else {
                         out.print(gson.toJson(new Json.Message("1", "Invalid username or password!")));
+                    }
+                    break;
+
+                case "new_post":  // 发新帖
+                    if (DatabaseAccess.checkToken(token)) {
+                        post = gson.fromJson(data, Json.Post.class);
+                        Long pid = DatabaseAccess.newPost(token.username, post.p_title, post.p_content);
+                        if (pid != null) {
+                            out.print(gson.toJson(new Json.Message()));
+                        } else {
+                            out.print(gson.toJson(new Json.Message("1", "Failed to add new post!")));
+                        }
+                    } else {
+                        out.print(gson.toJson(new Json.Message("1", "Bad token!")));
+                    }
+                    break;
+
+                case "delete_post":
+                    if (DatabaseAccess.checkToken(token)) {
+                        post = gson.fromJson(data, Json.Post.class);
+                        if (DatabaseAccess.getLevel(token.username) > 10) {
+                            Boolean state = DatabaseAccess.deletePost(post.pid);
+                            if (state) {
+                                out.print(gson.toJson(new Json.Message()));
+                            } else {
+                                out.print(gson.toJson(new Json.Message("1", "Failed to delete!")));
+                            }
+                        }
+                    } else {
+                        out.print(gson.toJson(new Json.Message("1", "Bad token!")));
+                    }
+                    break;
+
+                case "add_comment":
+                    if (DatabaseAccess.checkToken(token)) {
+                        comment = gson.fromJson(data, Json.Comment.class);
+                        Long cid = DatabaseAccess.addComment(comment);
+                        if (cid != null) {
+                            out.print(gson.toJson(new Json.Message()));
+                        } else {
+                            out.print(gson.toJson(new Json.Message("1", "Failed to add comment!")));
+                        }
+                    } else {
+                        out.print(gson.toJson(new Json.Message("1", "Bad token!")));
+                    }
+                    break;
+
+                case "delete_comment":
+                    if (DatabaseAccess.checkToken(token)) {
+                        comment = gson.fromJson(data, Json.Comment.class);
+                        if (DatabaseAccess.getLevel(token.username) > 10) {
+                            Boolean state = DatabaseAccess.deleteCommentByCid(comment.cid);
+                            if (state) {
+                                out.print(gson.toJson(new Json.Message()));
+                            } else {
+                                out.print(gson.toJson(new Json.Message("1", "Failed to delete comment!")));
+                            }
+                        }
                     }
                     break;
 

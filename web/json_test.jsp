@@ -32,7 +32,7 @@
     out.print("<br>");
     out.print(new Date().getTime() / 1000);
     out.print("<br>");
-    DatabaseAccess.EstablishConnection();
+    DatabaseAccess.establishConnection();
 //    Long uid = DatabaseAccess.addUser("blablaaaaaa", "1");
 //    out.print("uid: " + uid);
     Long exp = SiteUtils.getTimeStamp();

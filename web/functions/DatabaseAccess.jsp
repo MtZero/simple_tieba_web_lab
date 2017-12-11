@@ -24,7 +24,7 @@
         //private Json json = new Json();
 
         // 建立数据库连接
-        public static Boolean EstablishConnection() {
+        public static Boolean establishConnection() {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 connection = DriverManager.getConnection(connectString, SiteConfig.db_user, SiteConfig.db_pass);
@@ -325,19 +325,20 @@
         }
 
         // 发新贴
-        public static Long newPost(Object user, String content) {
+        public static Long newPost(Object user, String title, String content) {
             Long uid;
             if (String.class.isInstance(user)) uid = getUidByUsername((String) user);
             else uid = (Long) user;
             content = SiteUtils.HtmlFilter(content);
             try {
                 PreparedStatement preparedStatement =
-                        connection.prepareStatement("INSERT INTO `posts` (`uid`, `p_content`, `p_datetime`) VALUES (?, ?, ?)",
+                        connection.prepareStatement("INSERT INTO `posts` (`uid`, `p_title`, `p_content`, `p_datetime`) VALUES (?, ?, ?, ?)",
                                 Statement.RETURN_GENERATED_KEYS);
                 String p_datetime = simpleDateFormat.format(new Date());
                 preparedStatement.setLong(1, uid);
-                preparedStatement.setString(2, content);
-                preparedStatement.setString(3, p_datetime);
+                preparedStatement.setString(2, title);
+                preparedStatement.setString(3, content);
+                preparedStatement.setString(4, p_datetime);
                 Integer affectedRows = preparedStatement.executeUpdate();
                 if (affectedRows > 0) {
                     ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -356,7 +357,7 @@
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return -1L;
+            return null;
         }
 
         // 获得帖子状态
@@ -515,6 +516,8 @@
                         return null;
                     }
                 } else {
+                    Long current_p_floor = getFloorsByPid(pid);
+                    if (r_floor >= current_p_floor) return null;
                     preparedStatement =
                             connection.prepareStatement("INSERT INTO `comments` (`pid`, `uid`, `c_content`, `c_datetime`, `r_floor`) VALUES (?, ?, ?, ?, ?)");
                     preparedStatement.setLong(1, pid);
