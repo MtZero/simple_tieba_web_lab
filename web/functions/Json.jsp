@@ -37,8 +37,8 @@
 
         // just for test
         static class Messages {
-            public ArrayList<String> states = new ArrayList<>();
-            public ArrayList<String> messages = new ArrayList<>();
+            public ArrayList<String> states = new ArrayList<String>();
+            public ArrayList<String> messages = new ArrayList<String>();
         }
 
         // 用户模板类
@@ -118,7 +118,7 @@
 
         // 多篇帖子模板类
         static class Posts {
-            public ArrayList<Post> posts = new ArrayList<>();
+            public ArrayList<Post> posts = new ArrayList<Post>();
         }
 
         // Token 模板类
@@ -180,7 +180,7 @@
 
         // 多条评论模板类
         static class Comments {
-            public ArrayList<Comment> comments = new ArrayList<>();
+            public ArrayList<Comment> comments = new ArrayList<Comment>();
         }
 
         // 多条帖子请求模板类

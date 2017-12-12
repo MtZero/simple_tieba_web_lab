@@ -455,7 +455,7 @@
             if (limit == null) limit = 10;
             try {
                 PreparedStatement preparedStatement =
-                        connection.prepareStatement("SELECT * FROM `posts` WHERE `r_datetime` < ? AND `state` = 0 LIMIT ?");
+                        connection.prepareStatement("SELECT * FROM `posts` WHERE `r_datetime` < ? AND `state` = 0 ORDER BY `r_datetime` DESC LIMIT ?");
                 preparedStatement.setString(1, datetime);
                 preparedStatement.setInt(2, limit);
                 ResultSet resultSet = preparedStatement.executeQuery();
