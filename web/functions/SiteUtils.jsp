@@ -48,7 +48,8 @@
                     .replaceAll(">", "&gt;")
                     .replaceAll("\"", "&quot;")
                     .replaceAll("'", "&apos;")
-                    .replaceAll(" ", "&nbsp;");
+                    .replaceAll(" ", "&nbsp;")
+                    .replaceAll("\n", "<br>");
         }
 
     }
