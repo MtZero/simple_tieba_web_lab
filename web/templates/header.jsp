@@ -16,7 +16,7 @@
             </span>
             <nav class="menu-bar">
                 <ol class="menu-button-group">
-                    <li id="nav_index" class="menu-button"><a href="../index.jsp">首页</a></li>
+                    <li id="nav_index" class="menu-button"><a href="index.jsp">首页</a></li>
                     <li id="nav_about" class="menu-button"><a href="about.jsp">关于</a></li>
                 </ol>
             </nav>

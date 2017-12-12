@@ -299,6 +299,9 @@
                 if (resultSet.next()) {
                     resultSet.close();
                     preparedStatement.close();
+                    // 实际上，为了增强安全性，返回的 Token 还应该加上用户密码来生成
+                    // 这里为了简便，没有这样做。
+                    // 如果将来要修改，只需要改这里和 checkToken 函数。
                     return new Json.Token(username,
                             SiteUtils.MD5(username + expiration + SiteConfig.token_salt),
                             expiration);
