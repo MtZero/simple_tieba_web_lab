@@ -34,5 +34,23 @@
     </div>
 </div>
 
+<div id="reload_page" class="bottom-button reload-page">
+    <a onclick="location.reload(true)">
+        <i class="fa fa-refresh fa-3x"></i>
+    </a>
+</div>
+
+<div id="go_to_top" class="bottom-button go-to-top">
+    <a href="#">
+        <i class="fa fa-arrow-up fa-3x"></i>
+    </a>
+</div>
+
+<div id="new_post" class="bottom-button new-post">
+    <a onclick="write_new_post()">
+        <i class="fa fa-pencil fa-3x"></i>
+    </a>
+</div>
+
 </body>
 </html>

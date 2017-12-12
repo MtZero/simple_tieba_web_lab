@@ -1,0 +1,208 @@
+.emoticons {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-indent: 99999px;
+    overflow: hidden;
+    background: url("../images/emoticons.png") no-repeat;
+}
+
+.emo-1, .emo-01 {
+    background-position: 0 0;
+}
+
+.emo-2, .emo-02 {
+    background-position: 0 -40px;
+}
+
+.emo-3, .emo-03 {
+    background-position: 0 -80px;
+}
+
+.emo-4, .emo-04 {
+    background-position: 0 -120px;
+}
+
+.emo-5, .emo-05 {
+    background-position: 0 -160px;
+}
+
+.emo-6, .emo-06 {
+    background-position: 0 -200px;
+}
+
+.emo-7, .emo-07 {
+    background-position: 0 -240px;
+}
+
+.emo-8, .emo-08 {
+    background-position: 0 -280px;
+}
+
+.emo-9, .emo-09 {
+    background-position: 0 -320px;
+}
+
+.emo-10 {
+    background-position: 0 -360px;
+}
+
+.emo-11 {
+    background-position: 0 -400px;
+}
+
+.emo-12 {
+    background-position: 0 -440px;
+}
+
+.emo-13 {
+    background-position: 0 -480px;
+}
+
+.emo-14 {
+    background-position: 0 -520px;
+}
+
+.emo-15 {
+    background-position: 0 -560px;
+}
+
+.emo-16 {
+    background-position: 0 -600px;
+}
+
+.emo-17 {
+    background-position: 0 -640px;
+}
+
+.emo-18 {
+    background-position: 0 -680px;
+}
+
+.emo-19 {
+    background-position: 0 -720px;
+}
+
+.emo-20 {
+    background-position: 0 -760px;
+}
+
+.emo-21 {
+    background-position: 0 -800px;
+}
+
+.emo-22 {
+    background-position: 0 -840px;
+}
+
+.emo-23 {
+    background-position: 0 -880px;
+}
+
+.emo-24 {
+    background-position: 0 -920px;
+}
+
+.emo-25 {
+    background-position: 0 -960px;
+}
+
+.emo-26 {
+    background-position: 0 -1000px;
+}
+
+.emo-27 {
+    background-position: 0 -1040px;
+}
+
+.emo-28 {
+    background-position: 0 -1080px;
+}
+
+.emo-29 {
+    background-position: 0 -1120px;
+}
+
+.emo-30 {
+    background-position: 0 -1160px;
+}
+
+.emo-31 {
+    background-position: 0 -1200px;
+}
+
+.emo-32 {
+    background-position: 0 -1240px;
+}
+
+.emo-33 {
+    background-position: 0 -1280px;
+}
+
+.emo-34 {
+    background-position: 0 -1320px;
+}
+
+.emo-35 {
+    background-position: 0 -1360px;
+}
+
+.emo-36 {
+    background-position: 0 -1400px;
+}
+
+.emo-37 {
+    background-position: 0 -1440px;
+}
+
+.emo-38 {
+    background-position: 0 -1480px;
+}
+
+.emo-39 {
+    background-position: 0 -1520px;
+}
+
+.emo-40 {
+    background-position: 0 -1560px;
+}
+
+.emo-41 {
+    background-position: 0 -1600px;
+}
+
+.emo-42 {
+    background-position: 0 -1640px;
+}
+
+.emo-43 {
+    background-position: 0 -1680px;
+}
+
+.emo-44 {
+    background-position: 0 -1720px;
+}
+
+.emo-45 {
+    background-position: 0 -1760px;
+}
+
+.emo-46 {
+    background-position: 0 -1800px;
+}
+
+.emo-47 {
+    background-position: 0 -1840px;
+}
+
+.emo-48 {
+    background-position: 0 -1880px;
+}
+
+.emo-49 {
+    background-position: 0 -1920px;
+}
+
+.emo-50 {
+    background-position: 0 -1960px;
+}

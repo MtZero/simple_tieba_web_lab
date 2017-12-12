@@ -18,6 +18,10 @@
 //        public int de;
 //    }
 %>
+<link rel="stylesheet" href="assets/css/emoticons.css">
+<span class="emoticons emo-1"></span>
+<span class="emoticons emo-2"></span>
+
 <%
     request.setCharacterEncoding("utf-8");
     Json.Message json1 = new Json.Message("0", null);

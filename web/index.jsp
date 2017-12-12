@@ -11,6 +11,7 @@
     <title>森破贴吧 - 首页</title>
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/emoticons.css">
     <script src="assets/js/sizzle.min.js"></script>
     <script src="assets/js/global.js"></script>
 </head>
