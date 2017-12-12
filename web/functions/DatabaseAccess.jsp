@@ -471,6 +471,8 @@
                             resultSet.getLong("r_uid"),
                             resultSet.getString("r_datetime"),
                             resultSet.getInt("state"));
+                    post.p_datetime = post.p_datetime.substring(0, 19);
+                    post.r_datetime = post.r_datetime.substring(0, 19);
                     posts.posts.add(post);
                 }
                 resultSet.close();

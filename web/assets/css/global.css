@@ -5,7 +5,7 @@ body, div, li {
 
 body {
     position: relative;
-    background-image: url("../images/circles-light.png");
+    background: url("../images/circles-light.png") fixed;
     font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", "SimHei", "Hiragino Sans GB";
 }
 
@@ -123,8 +123,8 @@ a, a:hover, a:visited {
 .footer-outer {
     width: 100%;
     height: 50px;
-    position: absolute;
-    bottom: 0;
+    top: 100px;
+    position: relative;
 }
 
 .footer-inner {
@@ -147,15 +147,17 @@ a, a:hover, a:visited {
 .wrapper {
     position: relative;
     width: 1060px;
-    min-height: 500px;
+    min-height: 800px;
     margin-left: auto;
     margin-right: auto;
     top: 70px;
+    height: auto;
 }
 
 .content {
-    float: left;
+    /*float: left;*/
     width: 740px;
+    height: auto;
     /*border: solid black 1px;*/
     min-height: 300px;
     padding-left: 10px;
@@ -235,6 +237,11 @@ a, a:hover, a:visited {
     text-align: center;
 }
 
+.posts {
+    margin: 0;
+    padding: 0;
+}
+
 .post-outer {
     border-radius: 15px;
     overflow: hidden;
@@ -267,6 +274,7 @@ a, a:hover, a:visited {
     height: 100%;
     display: block;
     word-break: normal;
+    overflow: hidden;
 }
 
 .post-footer {
