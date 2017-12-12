@@ -31,7 +31,7 @@
              class="get-more-content-outer get-more-content panel">
             <a id="get_more_content_link"
                class="get-more-content-link get-more-content"
-               style="cursor: pointer" onclick="">
+               style="cursor: pointer" onclick="load_new_post()">
                 加载更多
             </a>
         </div>

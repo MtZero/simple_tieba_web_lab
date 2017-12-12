@@ -1,4 +1,5 @@
-async function load_new_post(datetime = null, limit = null) {
+let earliest_datetime = null;
+async function load_new_post(datetime = earliest_datetime, limit = null) {
     // if (datetime === null) {
     //     const myDate = new Date();
     //     datetime = myDate.getFullYear() + "-" +
@@ -22,6 +23,9 @@ async function load_new_post(datetime = null, limit = null) {
         for (let i = 0; i < len; i++) {
             Sizzle("#posts")[0].innerHTML += format_post_node(data[i]);
         }
+        console.log(earliest_datetime);
+        if (len > 0) earliest_datetime = data[len-1].r_datetime;
+        console.log(earliest_datetime);
     }
 }
 
