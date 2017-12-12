@@ -1,14 +1,14 @@
 <%--
   Created by IntelliJ IDEA.
   User: Jerry
-  Date: 17/11/29
-  Time: 08:43
+  Date: 17/12/12
+  Time: 11:39
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>森破贴吧 - 首页</title>
+    <title>森破贴吧 - 关于</title>
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/global.css">
     <script src="assets/js/sizzle.min.js"></script>
@@ -33,6 +33,6 @@
 <!-- footer end -->
 </body>
 <script>
-    Sizzle("#nav_index")[0].classList.add("menu-button-activate");
+    Sizzle("#nav_about")[0].classList.add("menu-button-activate");
 </script>
 </html>

@@ -9,7 +9,7 @@
 <%@ page import="java.util.*, java.sql.*" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ include file="SiteConfig.jsp" %>
+<%--<%@ include file="SiteConfig.jsp" %>--%>
 <%@ include file="SiteUtils.jsp" %>
 <%@ include file="Json.jsp"%>
 <%!

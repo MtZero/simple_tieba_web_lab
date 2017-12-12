@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.*, java.security.MessageDigest, java.sql.*" %>
-<%--<%@ include file="SiteConfig.jsp" %>--%>
+<%@ include file="SiteConfig.jsp" %>
 <%!
 
     static class Json {

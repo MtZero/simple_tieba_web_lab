@@ -63,3 +63,39 @@
     out.print(gson2.toJson(new Json.Message("0", "", tok1)));
 
 %>
+
+<script>
+    // var data;
+    // fetch("functions/Interface.jsp?intent=get_posts_by_time",{
+    //     method: "POST",
+    //     headers: {
+    //         //"token": "{\"username\":\"blabla\",\"token\":\"d8896ac38cae4e9a04e7a53f6a3685f2\",\"expiration\":1522981462}"
+    //     },
+    //     body: "{\"datetime\": \"2017-12-31 00:00:00\", \"limit\": 10}"
+    // }).then(function(response) {
+    //     if (response.ok) {
+    //         console.log("response ok!");
+    //         console.log(response);
+    //         data = response.json();
+    //         console.log(data.posts);
+    //     } else if (response.status === 401) {
+    //         console.log("Authorization failed.");
+    //     }
+    // }, function(e) {
+    //     console.log("error!");
+    //     console.log(e);
+    // })
+    async function load() {
+        let r = await fetch("functions/Interface.jsp?intent=new_post", {
+            method: "POST",
+            headers: {
+                "token": "{\"username\":\"blabla\",\"token\":\"d8896ac38cae4e9a04e7a53f6a3685f2\",\"expiration\":1522981462}"
+            },
+            body: "{\"p_title\": \"2017-12-31 00:00:00\", \"p_content\": 10}"
+        });
+        let j = await r.json();
+        console.log(j);
+        console.log(JSON.stringify(j));
+    }
+    load();
+</script>
