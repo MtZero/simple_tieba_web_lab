@@ -63,7 +63,7 @@
                 this.username = username;
                 this.password = password;
                 this.role = role;
-                this.avatar = SiteConfig.avatar_path + "default.png";
+                this.avatar = "default-avatar.jpg";
             }
 
             public User(Long uid, String username, String password, Integer role, String avatar) {
@@ -71,7 +71,7 @@
                 this.username = username;
                 this.password = password;
                 this.role = role;
-                this.avatar = SiteConfig.avatar_path + avatar;
+                this.avatar = avatar;
             }
         }
 

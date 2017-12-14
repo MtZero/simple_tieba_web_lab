@@ -37,11 +37,15 @@
 <!-- footer begin -->
 <%@ include file="templates/footer.jsp" %>
 <!-- footer end -->
+
+<!-- modal begin -->
+<%@ include file="templates/modal.jsp"%>
+<!-- modal end -->
 </body>
 <script src="assets/js/post.js"></script>
 <script>
     let pid =<%=pid%>;
+    init();
     load_pid_post(pid);
-
 </script>
 </html>

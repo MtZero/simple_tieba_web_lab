@@ -32,8 +32,13 @@
 <!-- footer begin -->
 <%@ include file="templates/footer.jsp"%>
 <!-- footer end -->
+
+<!-- modal begin -->
+<%@ include file="templates/modal.jsp"%>
+<!-- modal end -->
 </body>
 <script>
     Sizzle("#nav_about")[0].classList.add("menu-button-activate");
+    init();
 </script>
 </html>

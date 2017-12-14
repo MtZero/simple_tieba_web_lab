@@ -1,34 +1,24 @@
 async function load_pid_post(pid) {
-    console.log(pid);
     let r = await fetch("functions/Interface.jsp?intent=get_post_by_pid", {
         method: "POST",
         body: JSON.stringify({"pid": pid})
     });
     let j = await r.json();
-    console.log(j);
 
     if (j.state === "0") {
-        console.log("reading post");
         let data = j.data;
-        console.log(data);
         Sizzle("#content")[0].innerHTML += add_post(data);
     }
 
-    console.log(pid);
     r = await fetch("functions/Interface.jsp?intent=get_comments_desc", {
         method: "POST",
         body: JSON.stringify({"pid": pid})
     });
     j = await r.json();
-    console.log(j);
     if (j.state === "0") {
-        console.log("reading comment");
         let data = j.data.comments;
-        console.log(data);
         let len = data.length;
-        console.log(len);
         for (let i = 0; i < len; i++) {
-            console.log("buid comment");
             Sizzle("#content")[0].innerHTML += add_comment(data[i]);
         }
     }
@@ -83,7 +73,7 @@ function add_comment(data) {
     if (r_floor === 0) {
         return_html = '<span class="comment-floor">' + '#' + c_floor + '</span>&nbsp;&nbsp;\n';
     } else {
-        return_html = '<span class="comment-floor">' + '#' + c_floor + '→ #' + r_floor + '</span>&nbsp;&nbsp;\n';
+        return_html = '<span class="comment-floor">' + '#' + c_floor + ' → #' + r_floor + '</span>&nbsp;&nbsp;\n';
     }
     let ret =
         '    <div id="comment_outer_' + cid + '" class="comment-outer panel">\n' +
@@ -97,7 +87,7 @@ function add_comment(data) {
         '            <span id="comment_author_' + uid + '">' + username + '</span>&nbsp;&nbsp;\n' +
         '            <i class="fa fa-calendar"></i>\n' +
         '            <span id="comment_last_reply_' + cid + '">' + c_datetime + '</span>&nbsp;&nbsp;\n' +
-        '            <i class="fa fa-reply" onclick="reply_to(' + pid + ',' + c_floor + ')"></i>\n' +
+        '            <i class="fa fa-reply comment-reply" onclick="reply_to(' + pid + ',' + c_floor + ')"></i>\n' +
         return_html +
         '        </div>\n' +
         '    </div>\n';

@@ -359,6 +359,7 @@
             Long uid;
             if (String.class.isInstance(user)) uid = getUidByUsername((String) user);
             else uid = (Long) user;
+            title = SiteUtils.HtmlFilter(title);
             content = SiteUtils.HtmlFilter(content);
             try {
                 PreparedStatement preparedStatement =

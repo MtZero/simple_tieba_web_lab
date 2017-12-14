@@ -373,6 +373,10 @@ a, a:hover, a:visited {
     color: #AAA;
 }
 
+.comment-reply {
+    cursor: pointer;
+}
+
 .modal {
     color: #555;
 }

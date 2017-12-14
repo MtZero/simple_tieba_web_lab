@@ -50,5 +50,26 @@
 </div>
 
 
+<div id="change_password_modal" class="modal modal-background" hidden>
+    <div class="modal modal-outer">
+        <div class="modal modal-title">
+            <span>注册</span>
+            <span class="modal-close">
+                <a onclick="close_modal()"><i class="fa fa-times"></i></a>
+            </span>
+        </div>
+        <div class="dash"></div>
+        <div class="modal modal-content">
+            <form id="change_password_form" class="register-form">
+                <label><span>旧密码：</span><input id="change_password_old" type="password"></label>
+                <label><span>新密码：</span><input id="change_password_new" type="password"></label>
+                <label><span>新密码：</span><input id="change_password_new_2" type="password"></label>
+                <div onclick="change_password_submit()">提交</div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 </body>
 </html>

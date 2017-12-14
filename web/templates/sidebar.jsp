@@ -29,6 +29,7 @@
             <a href="#" onclick="login_modal()">登录</a>
         </div>
         <div id="when_login" class="when-login" style="display: none;">
+            <a href="#" onclick="change_password_modal()">修改密码</a>&nbsp;&nbsp;
             <a href="#" onclick="logout()">注销</a>
         </div>
     </div>
