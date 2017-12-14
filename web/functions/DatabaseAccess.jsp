@@ -189,6 +189,33 @@
             return null;
         }
 
+        // 从用户名获取用户信息
+        public static Json.User getUserByUsername(String username) {
+            if (username == null) return null;
+            try {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("SELECT * FROM `users` WHERE `username` = ?");
+                preparedStatement.setString(1, username);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    Json.User user = new Json.User(resultSet.getLong("uid"),
+                            resultSet.getString("username"),
+                            resultSet.getString("password"),
+                            resultSet.getInt("role"),
+                            resultSet.getString("avatar"));
+                    resultSet.close();
+                    preparedStatement.close();
+                    return user;
+                } else {
+                    resultSet.close();
+                    preparedStatement.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
 //        public static Boolean deleteUser(Long uid) {
 //            if (uid == null) return false;
 //            try {
@@ -422,6 +449,8 @@
                             resultSet.getInt("state"));
                     resultSet.close();
                     preparedStatement.close();
+                    post.p_datetime = post.p_datetime.substring(0, 19);
+                    post.r_datetime = post.r_datetime.substring(0, 19);
                     return post;
                 } else {
                     preparedStatement.close();
@@ -598,6 +627,7 @@
                             resultSet.getInt("state"));
                     resultSet.close();
                     preparedStatement.close();
+                    comment.c_datetime = comment.c_datetime.substring(0, 19);
                     return comment;
                 } else {
                     resultSet.close();
@@ -623,13 +653,14 @@
                             resultSet.getLong("pid"),
                             resultSet.getLong("uid"),
                             getUsernameByUid(resultSet.getLong("uid")),
-                            resultSet.getLong("C_floor"),
+                            resultSet.getLong("c_floor"),
                             resultSet.getLong("r_floor"),
-                            resultSet.getString("c_comment"),
+                            resultSet.getString("c_content"),
                             resultSet.getString("c_datetime"),
                             resultSet.getInt("state"));
                     resultSet.close();
                     preparedStatement.close();
+                    comment.c_datetime = comment.c_datetime.substring(0, 19);
                     return comment;
                 } else {
                     resultSet.close();
@@ -646,7 +677,7 @@
             if (pid == null) return null;
             try {
                 PreparedStatement preparedStatement =
-                        connection.prepareStatement("SELECT * FROM `comments` WHERE `pid` = ? AND `state` = 0 ORDER BY `c_datetime` ASC");
+                        connection.prepareStatement("SELECT * FROM `comments` WHERE `pid` = ? AND `state` = 0 ORDER BY `c_datetime` ASC, `c_floor` ASC");
                 preparedStatement.setLong(1, pid);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 Json.Comments comments = new Json.Comments();
@@ -657,9 +688,10 @@
                             getUsernameByUid(resultSet.getLong("uid")),
                             resultSet.getLong("C_floor"),
                             resultSet.getLong("r_floor"),
-                            resultSet.getString("c_comment"),
+                            resultSet.getString("c_content"),
                             resultSet.getString("c_datetime"),
                             resultSet.getInt("state"));
+                    comment.c_datetime = comment.c_datetime.substring(0, 19);
                     comments.comments.add(comment);
                 }
                 resultSet.close();
@@ -676,7 +708,7 @@
             if (pid == null) return null;
             try {
                 PreparedStatement preparedStatement =
-                        connection.prepareStatement("SELECT * FROM `comments` WHERE `pid` = ? AND `state` = 0 ORDER BY `c_datetime` DESC");
+                        connection.prepareStatement("SELECT * FROM `comments` WHERE `pid` = ? AND `state` = 0 ORDER BY `c_datetime` DESC, `c_floor` DESC");
                 preparedStatement.setLong(1, pid);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 Json.Comments comments = new Json.Comments();
@@ -687,9 +719,10 @@
                             getUsernameByUid(resultSet.getLong("uid")),
                             resultSet.getLong("C_floor"),
                             resultSet.getLong("r_floor"),
-                            resultSet.getString("c_comment"),
+                            resultSet.getString("c_content"),
                             resultSet.getString("c_datetime"),
                             resultSet.getInt("state"));
+                    comment.c_datetime = comment.c_datetime.substring(0, 19);
                     comments.comments.add(comment);
                 }
                 resultSet.close();

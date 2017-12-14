@@ -113,6 +113,25 @@
                     }
                     break;
 
+                case "get_user":  // 获取用户信息（除密码）
+                    if (DatabaseAccess.checkToken(token)) {
+                        user = gson.fromJson(data, Json.User.class);
+                        if (!user.username.equals(token.username)) {
+                            out.print(gson.toJson(new Json.Message("1", "Username mismatch!")));
+                        } else {
+                            Json.User userGot = DatabaseAccess.getUserByUsername(user.username);
+                            if (userGot != null) {
+                                userGot.password = null;
+                                out.print(gson.toJson(new Json.Message("0", "", userGot)));
+                            } else {
+                                out.print(gson.toJson(new Json.Message("1", "Invalid username!")));
+                            }
+                        }
+                    } else {
+                        out.print(gson.toJson(new Json.Message("1", "Bad token!")));
+                    }
+                    break;
+
                 case "new_post":  // 发新帖
                     if (DatabaseAccess.checkToken(token)) {
                         post = gson.fromJson(data, Json.Post.class);

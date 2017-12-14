@@ -19,37 +19,19 @@
             <span class="user-avatar-outer">
                 <img id="user_avatar" class="user-avatar" src="assets/images/default-avatar.jpg" alt="avatar">
             </span>
-            <span class="user-name">
+            <span id="user_name" class="user-name">
                 未登录
             </span>
         </div>
         <div class="dash"></div>
-        <div class="when-guest">
-            <a href="#" onclick="newuser()">注册</a>&nbsp;&nbsp;
-            <a href="#" onclick="login()">登录</a>
+        <div id="when_guest" class="when-guest">
+            <a href="#" onclick="register_modal()">注册</a>&nbsp;&nbsp;
+            <a href="#" onclick="login_modal()">登录</a>
         </div>
-        <div class="when-login" hidden>
+        <div id="when_login" class="when-login" style="display: none;">
             <a href="#" onclick="logout()">注销</a>
         </div>
     </div>
-</div>
-
-<div id="reload_page" class="bottom-button reload-page">
-    <a onclick="location.reload(true)">
-        <i class="fa fa-refresh fa-3x"></i>
-    </a>
-</div>
-
-<div id="go_to_top" class="bottom-button go-to-top">
-    <a href="#">
-        <i class="fa fa-arrow-up fa-3x"></i>
-    </a>
-</div>
-
-<div id="new_post" class="bottom-button new-post">
-    <a onclick="write_new_post()">
-        <i class="fa fa-pencil fa-3x"></i>
-    </a>
 </div>
 
 </body>

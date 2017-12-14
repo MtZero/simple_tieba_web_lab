@@ -1,0 +1,106 @@
+async function load_pid_post(pid) {
+    console.log(pid);
+    let r = await fetch("functions/Interface.jsp?intent=get_post_by_pid", {
+        method: "POST",
+        body: JSON.stringify({"pid": pid})
+    });
+    let j = await r.json();
+    console.log(j);
+
+    if (j.state === "0") {
+        console.log("reading post");
+        let data = j.data;
+        console.log(data);
+        Sizzle("#content")[0].innerHTML += add_post(data);
+    }
+
+    console.log(pid);
+    r = await fetch("functions/Interface.jsp?intent=get_comments_desc", {
+        method: "POST",
+        body: JSON.stringify({"pid": pid})
+    });
+    j = await r.json();
+    console.log(j);
+    if (j.state === "0") {
+        console.log("reading comment");
+        let data = j.data.comments;
+        console.log(data);
+        let len = data.length;
+        console.log(len);
+        for (let i = 0; i < len; i++) {
+            console.log("buid comment");
+            Sizzle("#content")[0].innerHTML += add_comment(data[i]);
+        }
+    }
+
+}
+
+function add_post(data) {
+    let id = data.id;
+    let username = data.username;
+    let r_datetime = data.r_datetime;
+    let title = data.p_title;
+    let content = data.p_content;
+    let floor = data.p_floor;
+    let ret =
+        '    <div id="post_outer_' + id + '" class="post-outer panel">\n' +
+        '        <div id="post_title_' + id + '" class="post-title">\n' +
+        '            <a id="post_title_link_' + id + '" class="post-title-link" >\n' +
+        '                ' + title + '\n' +
+        '            </a>\n' +
+        '        </div>\n' +
+        '        <div class="dash"></div>\n' +
+        '        <div id="post_content_' + id + '" class="post-content">\n' +
+        '            <a id="post_content_link_' + id + '" class="post-content-link" >\n' +
+        '                ' + content + '\n' +
+        '            </a>\n' +
+        '        </div>\n' +
+        '        <div id="post_footer_' + id + '" class="post-footer">\n' +
+        '            <i class="fa fa-user"></i>\n' +
+        '            <span id="post_author_' + id + '">' + username + '</span>&nbsp;&nbsp;\n' +
+        '            <i class="fa fa-calendar"></i>\n' +
+        '            <span id="post_last_reply_' + id + '">' + r_datetime + '</span>&nbsp;&nbsp;\n' +
+        '            <i class="fa fa-comments"></i>\n' +
+        '            <span id="post_floor_' + id + '">' + floor + '</span>\n' +
+        '        </div>\n' +
+        '    </div>\n';
+    return ret;
+}
+
+function add_comment(data) {
+    let cid = data.cid;
+    let pid = data.pid;
+    let uid = data.uid;
+    let c_floor = data.c_floor;
+    let r_floor = data.r_floor;
+    let c_content = data.c_content;
+    let c_datetime = data.c_datetime;
+    let c_state = data.c_state;
+    let username = data.username;
+
+    let return_html;
+    //todo
+    if (r_floor === 0) {
+        return_html = '<span class="comment-floor">' + '#' + c_floor + '</span>&nbsp;&nbsp;\n';
+    } else {
+        return_html = '<span class="comment-floor">' + '#' + c_floor + '→ #' + r_floor + '</span>&nbsp;&nbsp;\n';
+    }
+    let ret =
+        '    <div id="comment_outer_' + cid + '" class="comment-outer panel">\n' +
+        '        <div id="comment_content_' + cid + '" class="comment-content">\n' +
+        '            <a id="comment_content_link_' + cid + '" class="comment-content-link" >\n' +
+        '                ' + c_content + '\n' +
+        '            </a>\n' +
+        '        </div>\n' +
+        '        <div id="comment_footer_' + cid + '" class="comment-footer">\n' +
+        '            <i class="fa fa-user"></i>\n' +
+        '            <span id="comment_author_' + uid + '">' + username + '</span>&nbsp;&nbsp;\n' +
+        '            <i class="fa fa-calendar"></i>\n' +
+        '            <span id="comment_last_reply_' + cid + '">' + c_datetime + '</span>&nbsp;&nbsp;\n' +
+        '            <i class="fa fa-reply" onclick="reply_to(' + pid + ',' + c_floor + ')"></i>\n' +
+        return_html +
+        '        </div>\n' +
+        '    </div>\n';
+
+    return ret;
+}

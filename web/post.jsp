@@ -6,6 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    request.setCharacterEncoding("utf-8");
+    String pid = request.getParameter("pid");
+%>
 <html>
 <head>
     <title>森破贴吧 - 看贴</title>
@@ -17,23 +21,27 @@
 </head>
 <body>
 <!-- header begin -->
-<%@ include file="templates/header.jsp"%>
+<%@ include file="templates/header.jsp" %>
 <!-- header end -->
 
 <!-- wrapper start -->
 <div id="wrapper" class="wrapper">
     <div id="content" class="content">
 
+
     </div>
-    <%@ include file="templates/sidebar.jsp"%>
+    <%@ include file="templates/sidebar.jsp" %>
 </div>
 <!-- wrapper end -->
 
 <!-- footer begin -->
-<%@ include file="templates/footer.jsp"%>
+<%@ include file="templates/footer.jsp" %>
 <!-- footer end -->
 </body>
+<script src="assets/js/post.js"></script>
 <script>
-    // Sizzle("#nav_about")[0].classList.add("menu-button-activate");
+    let pid =<%=pid%>;
+    load_pid_post(pid);
+
 </script>
 </html>
