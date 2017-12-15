@@ -40,10 +40,8 @@ function format_post(data) {
         '            </a>\n' +
         '        </div>\n' +
         '        <div class="dash"></div>\n' +
-        '        <div id="post_content_' + id + '" class="post-content">\n' +
-        '            <a id="post_content_link_' + id + '" class="post-content-link" >\n' +
-        '                ' + content + '\n' +
-        '            </a>\n' +
+        '        <div id="post_content_' + id + '" class="post-content-in-page">\n' +
+        '            <p>' + content + '</p>\n' +
         '        </div>\n' +
         '        <div id="post_footer_' + id + '" class="post-footer">\n' +
         '            <i class="fa fa-user"></i>\n' +
@@ -94,12 +92,18 @@ function format_comment(data) {
     return ret;
 }
 
-function write_new_comment_modal(pid=null, floor=null) {
+function write_new_comment_modal(pid = null, r_floor = null) {
     let modal = Sizzle("#write_new_comment_modal")[0];
-    if (floor !== null) {
-        Sizzle("#write_new_comment_title")[0].innerHTML = "回复 #" + floor;
+    if (r_floor !== null) {
+        Sizzle("#write_new_comment_title")[0].innerHTML = "回复 #" + r_floor;
+        Sizzle("#write_new_comment_submit")[0].setAttribute("onclick", "write_new_comment_submit(" + pid + ", " + r_floor + ")");
     } else {
         Sizzle("#write_new_comment_title")[0].innerHTML = "发表回复";
+        Sizzle("#write_new_comment_submit")[0].setAttribute("onclick", "write_new_comment_submit(" + pid + ")");
     }
     modal.removeAttribute("hidden");
+}
+
+async function write_new_comment_submit(pin = null, r_floor = null) {
+    let c_content = Sizzle("#comment_input_content")[0].value;
 }
