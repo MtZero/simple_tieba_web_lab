@@ -107,7 +107,7 @@
                     <span id="toolbox_italic" class="tools" onclick="insert_at_cursor(field, '[i]', '[/i]')"><i class="fa fa-italic"></i></span>
                     <span id="toolbox_underline" class="tools" onclick="insert_at_cursor(field, '[u]', '[/u]')"><i class="fa fa-underline"></i></span>
                     <span id="toolbox_image" class="tools" onclick=""><i class="fa fa-file-image-o"></i></span>
-                    <span id="toolbox_emoticon" class="tools" style="cursor: none;">
+                    <span id="toolbox_emoticon" class="tools">
                         <i class="fa fa-smile-o"></i>
                         <span class="emoticon-panel">
                             <!-- insert emoticons with js -->

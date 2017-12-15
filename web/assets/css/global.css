@@ -485,7 +485,8 @@ a, a:hover, a:visited {
     height: 300px;
     margin-top: 10px;
     overflow: scroll;
-    font-size: 1.2em;
+    font-size: 1.1em;
+    resize: none;
 }
 
 .comment-toolbox {
@@ -533,5 +534,6 @@ a, a:hover, a:visited {
     top: 20%;
     left: 240px;
     width: 300px;
+    background: #DDD;
     /*height: 150px;*/
 }
