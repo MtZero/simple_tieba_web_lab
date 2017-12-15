@@ -53,10 +53,14 @@ function format_post_node(data) {
 }
 
 function write_new_post_modal() {
-    Sizzle("#post_title_input")[0].removeAttribute("hidden");
-    Sizzle("#write_new_comment_modal")[0].removeAttribute("hidden");
-    Sizzle("#write_new_comment_title")[0].innerHTML = "发表新帖";
-    Sizzle("#write_new_comment_submit")[0].setAttribute("onclick", "write_new_post_submit()");
+    if (check_login()) {
+        Sizzle("#post_title_input")[0].removeAttribute("hidden");
+        Sizzle("#write_new_comment_modal")[0].removeAttribute("hidden");
+        Sizzle("#write_new_comment_title")[0].innerHTML = "发表新帖";
+        Sizzle("#write_new_comment_submit")[0].setAttribute("onclick", "write_new_post_submit()");
+    } else {
+        alert("请登录！");
+    }
 }
 
 async function write_new_post_submit() {

@@ -77,11 +77,17 @@ async function init() {
     Sizzle("#user_avatar")[0].setAttribute("style", "cursor: pointer;");
 }
 
+function check_login() {
+    return (token != null && token !== "" && token !== undefined);
+
+}
+
 function logout() {
     if (confirm("确定要注销吗？")) {
         setCookie("token", undefined);
         setCookie("avatar_path", "default-avatar.jpg");
         setCookie("role", "-1");
+        token = undefined;
         Sizzle("#when_login")[0].setAttribute("style", "display: none;");
         Sizzle("#when_guest")[0].removeAttribute("style");
         Sizzle("#user_avatar")[0].setAttribute("src", avatar_prefix + getCookie("avatar_path"));
@@ -136,8 +142,12 @@ function login_modal() {
 }
 
 function change_password_modal() {
-    let modal = Sizzle("#change_password_modal")[0];
-    modal.removeAttribute("hidden");
+    if (check_login()) {
+        let modal = Sizzle("#change_password_modal")[0];
+        modal.removeAttribute("hidden");
+    } else {
+        alert("请登录！");
+    }
 }
 
 async function change_password_submit() {
@@ -173,9 +183,11 @@ async function change_password_submit() {
 }
 
 function change_avatar_modal() {
-    if (token !== undefined || token !== "") {
+    if (check_login()) {
         let modal = Sizzle("#change_avatar_modal")[0];
         modal.removeAttribute("hidden");
+    } else {
+        alert("请登录！");
     }
 }
 

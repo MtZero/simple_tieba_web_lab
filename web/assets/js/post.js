@@ -91,16 +91,20 @@ function format_comment(data) {
 }
 
 function write_new_comment_modal(pid = null, r_floor = null) {
-    let modal = Sizzle("#write_new_comment_modal")[0];
-    Sizzle("#post_title_input")[0].setAttribute("hidden", "");
-    if (r_floor !== null) {
-        Sizzle("#write_new_comment_title")[0].innerHTML = "回复 #" + r_floor;
-        Sizzle("#write_new_comment_submit")[0].setAttribute("onclick", "write_new_comment_submit(" + pid + ", " + r_floor + ")");
+    if (check_login()) {
+        let modal = Sizzle("#write_new_comment_modal")[0];
+        Sizzle("#post_title_input")[0].setAttribute("hidden", "");
+        if (r_floor !== null) {
+            Sizzle("#write_new_comment_title")[0].innerHTML = "回复 #" + r_floor;
+            Sizzle("#write_new_comment_submit")[0].setAttribute("onclick", "write_new_comment_submit(" + pid + ", " + r_floor + ")");
+        } else {
+            Sizzle("#write_new_comment_title")[0].innerHTML = "发表回复";
+            Sizzle("#write_new_comment_submit")[0].setAttribute("onclick", "write_new_comment_submit(" + pid + ")");
+        }
+        modal.removeAttribute("hidden");
     } else {
-        Sizzle("#write_new_comment_title")[0].innerHTML = "发表回复";
-        Sizzle("#write_new_comment_submit")[0].setAttribute("onclick", "write_new_comment_submit(" + pid + ")");
+        alert("请登录！");
     }
-    modal.removeAttribute("hidden");
 }
 
 async function write_new_comment_submit(pid = null, r_floor = null) {
