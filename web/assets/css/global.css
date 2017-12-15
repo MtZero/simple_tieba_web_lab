@@ -522,3 +522,16 @@ a, a:hover, a:visited {
     margin: auto;
     background-color: #DDD;
 }
+
+.emoticon-panel {
+    display: none;
+}
+
+#toolbox_emoticon:hover .emoticon-panel {
+    display: block;
+    position: fixed;
+    top: 20%;
+    left: 240px;
+    width: 300px;
+    /*height: 150px;*/
+}

@@ -104,10 +104,15 @@
             <div>
                 <div id="comment_toolbox" class="comment-toolbox">
                     <span id="toolbox_bold" class="tools" onclick="insert_at_cursor(field, '[b]', '[/b]')"><i class="fa fa-bold"></i></span>
-                    <span id="toolbox_italic" class="tools" onclick=""><i class="fa fa-italic"></i></span>
-                    <span id="toolbox_underline" class="tools" onclick=""><i class="fa fa-underline"></i></span>
+                    <span id="toolbox_italic" class="tools" onclick="insert_at_cursor(field, '[i]', '[/i]')"><i class="fa fa-italic"></i></span>
+                    <span id="toolbox_underline" class="tools" onclick="insert_at_cursor(field, '[u]', '[/u]')"><i class="fa fa-underline"></i></span>
                     <span id="toolbox_image" class="tools" onclick=""><i class="fa fa-file-image-o"></i></span>
-                    <span id="toolbox_emoticon" class="tools" onclick=""><i class="fa fa-smile-o"></i></span>
+                    <span id="toolbox_emoticon" class="tools" style="cursor: none;">
+                        <i class="fa fa-smile-o"></i>
+                        <span class="emoticon-panel">
+                            <!-- insert emoticons with js -->
+                        </span>
+                    </span>
                 </div>
                 <textarea id="comment_input_content" class="comment-input-content"></textarea>
                 <div class="modal-submit" onclick="">提交</div>
@@ -117,6 +122,7 @@
 </div>
 <script>
     let field = Sizzle('#comment_input_content')[0];
+    init_emoticons();
 </script>
 
 </body>

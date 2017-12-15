@@ -220,13 +220,13 @@ function bbcode_translate(str) {
         "<img src='uploads/files/$1' alt='image'>",
         "<span class='emoticons emo-$1'></span>"
     ];
-    for (let i=0; i<format_search.length; i++) {
+    for (let i = 0; i < format_search.length; i++) {
         str = str.replace(format_search[i], format_replace[i]);
     }
     return str;
 }
 
-function insert_at_cursor(field, insert_value_st="", insert_value_ed="") {
+function insert_at_cursor(field, insert_value_st = "", insert_value_ed = "") {
     if (field.selectionStart || field.selectionStart == "0") {
         let start_pos = field.selectionStart;
         let end_pos = field.selectionEnd;
@@ -252,5 +252,14 @@ function insert_at_cursor(field, insert_value_st="", insert_value_ed="") {
     } else {
         field.value += insert_value_st + insert_value_ed;
         field.focus();
+    }
+}
+
+function init_emoticons() {
+    let panels = Sizzle(".emoticon-panel");
+    for (let i = 0; i < panels.length; i++) {
+        for (let j = 1; j <= 50; j++) {
+            panels[i].innerHTML += "<span class='emoticons emo-" + j + "' onclick='insert_at_cursor(field, \"[emo]" + j + "[/emo]\")'></span>";
+        }
     }
 }
