@@ -7,7 +7,7 @@ async function load_pid_post(pid) {
 
     if (j.state === "0") {
         let data = j.data;
-        Sizzle("#content")[0].innerHTML += add_post(data);
+        Sizzle("#content")[0].innerHTML += format_post(data);
     }
 
     r = await fetch("functions/Interface.jsp?intent=get_comments_desc", {
@@ -19,18 +19,18 @@ async function load_pid_post(pid) {
         let data = j.data.comments;
         let len = data.length;
         for (let i = 0; i < len; i++) {
-            Sizzle("#content")[0].innerHTML += add_comment(data[i]);
+            Sizzle("#content")[0].innerHTML += format_comment(data[i]);
         }
     }
 
 }
 
-function add_post(data) {
+function format_post(data) {
     let id = data.id;
     let username = data.username;
     let r_datetime = data.r_datetime;
     let title = data.p_title;
-    let content = data.p_content;
+    let content = bbcode_translate(data.p_content);
     let floor = data.p_floor;
     let ret =
         '    <div id="post_outer_' + id + '" class="post-outer panel">\n' +
@@ -57,19 +57,18 @@ function add_post(data) {
     return ret;
 }
 
-function add_comment(data) {
+function format_comment(data) {
     let cid = data.cid;
     let pid = data.pid;
     let uid = data.uid;
     let c_floor = data.c_floor;
     let r_floor = data.r_floor;
-    let c_content = data.c_content;
+    let c_content = bbcode_translate(data.c_content);
     let c_datetime = data.c_datetime;
     let c_state = data.c_state;
     let username = data.username;
-
     let return_html;
-    //todo
+    //todo 管理员删除功能
     if (r_floor === 0) {
         return_html = '<span class="comment-floor">' + '#' + c_floor + '</span>&nbsp;&nbsp;\n';
     } else {
@@ -87,10 +86,20 @@ function add_comment(data) {
         '            <span id="comment_author_' + uid + '">' + username + '</span>&nbsp;&nbsp;\n' +
         '            <i class="fa fa-calendar"></i>\n' +
         '            <span id="comment_last_reply_' + cid + '">' + c_datetime + '</span>&nbsp;&nbsp;\n' +
-        '            <i class="fa fa-reply comment-reply" onclick="reply_to(' + pid + ',' + c_floor + ')"></i>\n' +
+        '            <i class="fa fa-reply comment-reply" onclick="write_new_comment_modal(' + pid + ',' + c_floor + ')"></i>\n' +
         return_html +
         '        </div>\n' +
         '    </div>\n';
 
     return ret;
+}
+
+function write_new_comment_modal(pid=null, floor=null) {
+    let modal = Sizzle("#write_new_comment_modal")[0];
+    if (floor !== null) {
+        Sizzle("#write_new_comment_title")[0].innerHTML = "回复 #" + floor;
+    } else {
+        Sizzle("#write_new_comment_title")[0].innerHTML = "发表回复";
+    }
+    modal.removeAttribute("hidden");
 }

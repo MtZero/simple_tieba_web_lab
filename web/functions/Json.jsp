@@ -183,7 +183,7 @@
             public ArrayList<Comment> comments = new ArrayList<Comment>();
         }
 
-        // 多条帖子请求模板类
+        // 帖子请求模板类
         static class PostsRequest {
             public String datetime;
             public Integer limit;

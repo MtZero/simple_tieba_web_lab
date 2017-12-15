@@ -44,7 +44,10 @@
                                 DiskFileItem dfi = (DiskFileItem) fi;
                                 if (!fi.getName().trim().equals("")) {
                                     String file_name = FilenameUtils.getName(dfi.getName());
-                                    if (file_name.endsWith(".jpg") | file_name.endsWith(".png") | file_name.endsWith(".jpeg")) {
+                                    if (file_name.endsWith(".jpg") ||
+                                            file_name.endsWith(".png") ||
+                                            file_name.endsWith(".jpeg") ||
+                                            file_name.endsWith(".gif")) {
                                         String new_file_name = SiteUtils.MD5(filename + new Date()) + extend;
                                         String path = application.getRealPath("uploads/avatar")
                                                 + System.getProperty("file.separator")

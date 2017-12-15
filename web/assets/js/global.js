@@ -1,9 +1,9 @@
 let cookie_prefix = "simple_tieba_";
 let avatar_prefix = "uploads/avatar/";
 
-function close_modal(){
+function close_modal() {
     let modals = Sizzle(".modal-background");
-    for (let i=0; i<modals.length; i++){
+    for (let i = 0; i < modals.length; i++) {
         modals[i].setAttribute("hidden", "");
     }
 }
@@ -36,7 +36,7 @@ async function register_submit() {
 
 function getCookie(name) {
     let cookies = document.cookie.split(";");
-    for (let i=0; i<cookies.length; i++) {
+    for (let i = 0; i < cookies.length; i++) {
         let cookie = cookies[i].trim().split("=");
         if (cookie[0].trim() === cookie_prefix + name) return cookie[1].trim();
     }
@@ -54,6 +54,7 @@ if (token_json !== undefined && token_json !== null && token_json !== "" && toke
 } else {
     token = undefined;
 }
+
 async function init() {
     if (token != null && token !== "" && token !== undefined) {
         let date = new Date();
@@ -89,7 +90,7 @@ function logout() {
     }
 }
 
-async function login(username=undefined, password=undefined) {
+async function login(username = undefined, password = undefined) {
     if (username === undefined) {
         username = Sizzle("#login_username")[0].value;
     }
@@ -202,4 +203,54 @@ async function change_avatar_submit() {
         alert("修改失败！");
     }
     console.log(j);
+}
+
+function bbcode_translate(str) {
+    let format_search = [
+        /\[b\](.*?)\[\/b\]/ig,
+        /\[i\](.*?)\[\/i\]/ig,
+        /\[u\](.*?)\[\/u\]/ig,
+        /\[img\](.*?)\[\/img\]/ig,
+        /\[emo\](.*?)\[\/emo\]/ig
+    ];
+    let format_replace = [
+        "<strong>$1</strong>",
+        "<em>$1</em>",
+        "<span style='text-decoration: underline;'>$1</span>",
+        "<img src='uploads/files/$1' alt='image'>",
+        "<span class='emoticons emo-$1'></span>"
+    ];
+    for (let i=0; i<format_search.length; i++) {
+        str = str.replace(format_search[i], format_replace[i]);
+    }
+    return str;
+}
+
+function insert_at_cursor(field, insert_value_st="", insert_value_ed="") {
+    if (field.selectionStart || field.selectionStart == "0") {
+        let start_pos = field.selectionStart;
+        let end_pos = field.selectionEnd;
+        if (start_pos > end_pos) {
+            let t = start_pos;
+            start_pos = end_pos;
+            end_pos = t;
+        }
+
+        console.log(insert_value_st, insert_value_ed);
+
+        let scroll_top = field.scrollTop;
+
+        field.value = field.value.substring(0, start_pos) +
+            insert_value_st +
+            field.value.substring(start_pos, end_pos) +
+            insert_value_ed +
+            field.value.substring(end_pos);
+        if (scroll_top > 0) field.scrollTop = scroll_top;
+        field.focus();
+        field.selectionStart = start_pos + insert_value_st.length;
+        field.selectionEnd = end_pos + insert_value_st.length;
+    } else {
+        field.value += insert_value_st + insert_value_ed;
+        field.focus();
+    }
 }

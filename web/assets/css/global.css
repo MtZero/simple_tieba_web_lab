@@ -320,6 +320,10 @@ a, a:hover, a:visited {
     height: 5em;
 }
 
+.post-content img {
+    max-width: 90%;
+}
+
 .post-content-link {
     width: 100%;
     height: 100%;
@@ -408,6 +412,19 @@ a, a:hover, a:visited {
     transform: translate(-50%, -50%);
 }
 
+.modal-big-outer {
+    width: 700px;
+    height: 500px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.5);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .modal-title {
     margin: 5px 15px;
     height: 1.5em;
@@ -456,13 +473,45 @@ a, a:hover, a:visited {
     border-radius: 5px;
 }
 
-/*.modal-content input[type="button"], .modal-content[type="submit"] {*/
-/*font-size: 1.5em;*/
-/*width: 100px;*/
-/*margin-top: 40px;*/
-/*}*/
+.modal-content-big {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 450px;
+}
 
-form div {
+.comment-input-content {
+    width: 500px;
+    height: 300px;
+    margin-top: 10px;
+    overflow: scroll;
+    font-size: 1.2em;
+}
+
+.comment-toolbox {
+    width: 500px;
+
+}
+
+.tools {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5px;
+}
+
+.tools:hover {
+    background-color: #AAA;
+}
+
+.modal-content-big textarea {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-submit {
     display: flex;
     align-items: center;
     justify-content: center;
