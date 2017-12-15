@@ -33,7 +33,7 @@
 <div id="login_modal" class="modal modal-background" hidden>
     <div class="modal modal-outer">
         <div class="modal modal-title">
-            <span>注册</span>
+            <span>登录</span>
             <span class="modal-close">
                 <a onclick="close_modal()"><i class="fa fa-times"></i></a>
             </span>
@@ -53,7 +53,7 @@
 <div id="change_password_modal" class="modal modal-background" hidden>
     <div class="modal modal-outer">
         <div class="modal modal-title">
-            <span>注册</span>
+            <span>修改密码</span>
             <span class="modal-close">
                 <a onclick="close_modal()"><i class="fa fa-times"></i></a>
             </span>
@@ -70,6 +70,24 @@
     </div>
 </div>
 
+
+<div id="change_avatar_modal" class="modal modal-background" hidden>
+    <div class="modal modal-outer">
+        <div class="modal modal-title">
+            <span>修改头像</span>
+            <span class="modal-close">
+                <a onclick="close_modal()"><i class="fa fa-times"></i></a>
+            </span>
+        </div>
+        <div class="dash"></div>
+        <div class="modal modal-content">
+            <form id="change_avatar_form" class="register-form">
+                <label><span>新头像：</span><input id="change_avatar" type="file" accept="image/*"></label>
+                <div onclick="change_avatar_submit()">上传</div>
+            </form>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

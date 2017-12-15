@@ -73,6 +73,7 @@ async function init() {
         setCookie("avatar_path", "default-avatar.jpg");
     }
     Sizzle("#user_avatar")[0].setAttribute("src", avatar_prefix + getCookie("avatar_path"));
+    Sizzle("#user_avatar")[0].setAttribute("style", "cursor: pointer;");
 }
 
 function logout() {
@@ -84,6 +85,7 @@ function logout() {
         Sizzle("#when_guest")[0].removeAttribute("style");
         Sizzle("#user_avatar")[0].setAttribute("src", avatar_prefix + getCookie("avatar_path"));
         Sizzle("#user_name")[0].innerHTML = "未登录";
+        Sizzle("#user_avatar")[0].removeAttribute("style");
     }
 }
 
@@ -122,6 +124,7 @@ async function login(username=undefined, password=undefined) {
         Sizzle("#login_modal")[0].setAttribute("hidden", "");
         Sizzle("#login_username")[0].value = "";
         Sizzle("#login_password")[0].value = "";
+        Sizzle("#user_avatar")[0].setAttribute("style", "cursor: pointer;");
     } else {
         alert("帐号或密码不正确！");
     }
@@ -162,8 +165,41 @@ async function change_password_submit() {
             Sizzle("#when_guest")[0].removeAttribute("style");
             Sizzle("#user_avatar")[0].setAttribute("src", avatar_prefix + getCookie("avatar_path"));
             Sizzle("#user_name")[0].innerHTML = "未登录";
+            Sizzle("#user_avatar")[0].removeAttribute("style");
         } else {
             alert("修改出错！");
         }
     }
+}
+
+function change_avatar_modal() {
+    if (token !== undefined || token !== "") {
+        let modal = Sizzle("#change_avatar_modal")[0];
+        modal.removeAttribute("hidden");
+    }
+}
+
+async function change_avatar_submit() {
+    let data = new FormData();
+    let file = Sizzle("#change_avatar")[0].files[0];
+    data.append("file", file);
+    let filename = file.name.substring(0, file.name.lastIndexOf("."));
+    let extend = file.name.substring(file.name.lastIndexOf("."), file.name.length);
+    let r = await fetch("functions/UploadAvatar.jsp", {
+        method: "POST",
+        headers: {"token": JSON.stringify(token)},
+        body: data
+    });
+    let j = await r.json();
+    if (j.state === "0") {
+        let new_avatar = j.data.filename;
+        setCookie("avatar_path", new_avatar);
+        Sizzle("#user_avatar")[0].setAttribute("src", avatar_prefix + getCookie("avatar_path"));
+        alert("修改成功！");
+        Sizzle("#change_avatar_modal")[0].setAttribute("hidden", "");
+
+    } else {
+        alert("修改失败！");
+    }
+    console.log(j);
 }

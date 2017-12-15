@@ -17,7 +17,7 @@
     <div id="user_panel_inner" class="user-panel-inner user-panel">
         <div id="user_profile" class="user-profile">
             <span class="user-avatar-outer">
-                <img id="user_avatar" class="user-avatar" src="assets/images/default-avatar.jpg" alt="avatar">
+                <img id="user_avatar" class="user-avatar" src="assets/images/default-avatar.jpg" alt="avatar" onclick="change_avatar_modal()">
             </span>
             <span id="user_name" class="user-name">
                 未登录

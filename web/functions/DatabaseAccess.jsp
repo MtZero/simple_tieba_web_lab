@@ -93,6 +93,22 @@
             return false;
         }
 
+        // 修改头像
+        public static Boolean modifyAvatar(Json.User user) {
+            if (user == null) return null;
+            try {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement("UPDATE `users` SET `avatar` = ? WHERE `uid` = ?");
+                preparedStatement.setString(1, user.avatar);
+                preparedStatement.setLong(2, user.uid);
+                int affectedRows = preparedStatement.executeUpdate();
+                return affectedRows > 0;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
         // 删除用户（伪删除）
         public static Boolean deleteUser(Object user) {
             if (user == null) return false;

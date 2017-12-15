@@ -81,6 +81,10 @@
                     }
                     break;
 
+                case "upload_avatar":
+                    //todo
+                    break;
+
                 case "delete_user":  // 删除用户
                     user = gson.fromJson(data, Json.User.class);
                     if (DatabaseAccess.checkToken(token)) {

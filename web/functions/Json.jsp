@@ -184,9 +184,21 @@
         }
 
         // 多条帖子请求模板类
-        static  class PostsRequest {
+        static class PostsRequest {
             public String datetime;
             public Integer limit;
+        }
+
+        static class File {
+            public String filename;
+
+            File() {
+                filename = null;
+            }
+
+            File(String filename) {
+                this.filename = filename;
+            }
         }
     }
 %>
