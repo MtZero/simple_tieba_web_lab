@@ -196,8 +196,8 @@ async function change_avatar_submit() {
         setCookie("avatar_path", new_avatar);
         Sizzle("#user_avatar")[0].setAttribute("src", avatar_prefix + getCookie("avatar_path"));
         alert("修改成功！");
-        Sizzle("#change_avatar_modal")[0].setAttribute("hidden", "");
         Sizzle("#change_avatar")[0].value = "";
+        Sizzle("#change_avatar_modal")[0].setAttribute("hidden", "");
     } else {
         alert("修改失败！");
     }
@@ -212,11 +212,13 @@ async function upload_file_submit() {
         headers: {"token": JSON.stringify(token)},
         body: data
     });
+    console.log(r);
     let j = await r.json();
+    console.log(j);
     if (j.state === "0") {
         let filename = j.data.filename;
+        Sizzle("#upload_file_input")[0].value = "";
         insert_at_cursor(field, "[img]" + filename + "[/img]");
-        Sizzle("#upload_file_input")[0].value = 0;
     } else {
         alert("上传失败！");
     }
@@ -234,7 +236,28 @@ function bbcode_translate(str) {
         "<strong>$1</strong>",
         "<em>$1</em>",
         "<span style='text-decoration: underline;'>$1</span>",
-        "<img src='uploads/files/$1' alt='image'>",
+        "<img src='uploads/files/$1' alt='image' class='content-image'>",
+        "<span class='emoticons emo-$1'></span>"
+    ];
+    for (let i = 0; i < format_search.length; i++) {
+        str = str.replace(format_search[i], format_replace[i]);
+    }
+    return str;
+}
+
+function bbcode_translate_without_img(str) {
+    let format_search = [
+        /\[b\](.*?)\[\/b\]/ig,
+        /\[i\](.*?)\[\/i\]/ig,
+        /\[u\](.*?)\[\/u\]/ig,
+        /\[img\](.*?)\[\/img\]/ig,
+        /\[emo\](.*?)\[\/emo\]/ig
+    ];
+    let format_replace = [
+        "<strong>$1</strong>",
+        "<em>$1</em>",
+        "<span style='text-decoration: underline;'>$1</span>",
+        "[图片]",
         "<span class='emoticons emo-$1'></span>"
     ];
     for (let i = 0; i < format_search.length; i++) {

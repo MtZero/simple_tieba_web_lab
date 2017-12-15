@@ -35,7 +35,7 @@ function format_post(data) {
     let ret =
         '    <div id="post_outer_' + id + '" class="post-outer panel">\n' +
         '        <div id="post_title_' + id + '" class="post-title">\n' +
-        '            <p>' + title + '</p>\n' +
+        '            ' + title + '\n' +
         '        </div>\n' +
         '        <div class="dash"></div>\n' +
         '        <div id="post_content_' + id + '" class="post-content-in-page">\n' +
@@ -92,6 +92,7 @@ function format_comment(data) {
 
 function write_new_comment_modal(pid = null, r_floor = null) {
     let modal = Sizzle("#write_new_comment_modal")[0];
+    Sizzle("#post_title_input")[0].setAttribute("hidden", "");
     if (r_floor !== null) {
         Sizzle("#write_new_comment_title")[0].innerHTML = "回复 #" + r_floor;
         Sizzle("#write_new_comment_submit")[0].setAttribute("onclick", "write_new_comment_submit(" + pid + ", " + r_floor + ")");

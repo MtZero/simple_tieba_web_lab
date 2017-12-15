@@ -90,7 +90,7 @@
 </div>
 
 
-<div id="write_new_comment_modal" class="modal modal-background">
+<div id="write_new_comment_modal" class="modal modal-background" hidden>
     <div class="modal modal-big-outer">
         <div class="modal modal-title">
             <span id="write_new_comment_title">发表回复</span>
@@ -100,12 +100,12 @@
         </div>
         <div class="dash"></div>
         <div class="modal modal-content-big">
-            <div>
+            <div id="modal_content_inner">
+                <input type="text" id="post_title_input" class="post-title-input" placeholder="标题" hidden>
                 <div id="comment_toolbox" class="comment-toolbox">
                     <span id="toolbox_bold" class="tools" onclick="insert_at_cursor(field, '[b]', '[/b]')"><i class="fa fa-bold"></i></span>
                     <span id="toolbox_italic" class="tools" onclick="insert_at_cursor(field, '[i]', '[/i]')"><i class="fa fa-italic"></i></span>
                     <span id="toolbox_underline" class="tools" onclick="insert_at_cursor(field, '[u]', '[/u]')"><i class="fa fa-underline"></i></span>
-                    <!-- todo -->
                     <span id="toolbox_image" class="tools" style="cursor: default;">
                         <i class="fa fa-file-image-o"></i>
                         <span class="upload-file-panel">
@@ -120,7 +120,7 @@
                         </span>
                     </span>
                 </div>
-                <textarea id="comment_input_content" class="comment-input-content"></textarea>
+                <textarea id="comment_input_content" class="comment-input-content" placeholder="内容"></textarea>
                 <!-- onclick attribute is set by js -->
                 <div id="write_new_comment_submit" class="modal-submit" onclick="">提交</div>
             </div>

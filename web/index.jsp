@@ -52,7 +52,7 @@
     </div>
 
     <div id="new_post" class="bottom-button new-post">
-        <a onclick="write_new_post()">
+        <a onclick="write_new_post_modal()">
             <i class="fa fa-pencil fa-3x"></i>
         </a>
     </div>

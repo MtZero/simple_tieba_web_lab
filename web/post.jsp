@@ -52,9 +52,9 @@
     </a>
 </div>
 
-<div id="new_post" class="bottom-button new-post">
+<div id="new_comment" class="bottom-button new-post">
     <a onclick="write_new_comment_modal(<%=pid%>)">
-        <i class="fa fa-pencil fa-3x"></i>
+        <i class="fa fa-reply fa-3x"></i>
     </a>
 </div>
 <!-- modal end -->
