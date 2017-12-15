@@ -35,9 +35,7 @@ function format_post(data) {
     let ret =
         '    <div id="post_outer_' + id + '" class="post-outer panel">\n' +
         '        <div id="post_title_' + id + '" class="post-title">\n' +
-        '            <a id="post_title_link_' + id + '" class="post-title-link" >\n' +
-        '                ' + title + '\n' +
-        '            </a>\n' +
+        '            <p>' + title + '</p>\n' +
         '        </div>\n' +
         '        <div class="dash"></div>\n' +
         '        <div id="post_content_' + id + '" class="post-content-in-page">\n' +
@@ -104,6 +102,21 @@ function write_new_comment_modal(pid = null, r_floor = null) {
     modal.removeAttribute("hidden");
 }
 
-async function write_new_comment_submit(pin = null, r_floor = null) {
+async function write_new_comment_submit(pid = null, r_floor = null) {
     let c_content = Sizzle("#comment_input_content")[0].value;
+    let body = {"pid": pid, "c_content": c_content};
+    if (r_floor !== null || r_floor !== undefined) body.r_floor = r_floor;
+    let r = await fetch("functions/Interface.jsp?intent=add_comment", {
+        method: "POST",
+        headers: {"token": JSON.stringify(token)},
+        body: JSON.stringify(body)
+    });
+    let j = await r.json();
+    if (j.state === "0") {
+        Sizzle("#write_new_comment_modal")[0].setAttribute("hidden", "");
+        Sizzle("#comment_input_content")[0].value = "";
+        location.reload(true);
+    } else {
+        alert("回复失败！");
+    }
 }

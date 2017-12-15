@@ -330,7 +330,7 @@ a, a:hover, a:visited {
 }
 
 .post-content img {
-    max-width: 90%;
+    width: 90%;
 }
 
 .post-content-link {
@@ -540,9 +540,44 @@ a, a:hover, a:visited {
 #toolbox_emoticon:hover .emoticon-panel {
     display: block;
     position: fixed;
-    top: 20%;
+    top: 20.2%;
     left: 240px;
     width: 300px;
     background: #DDD;
     /*height: 150px;*/
+}
+
+.upload-file-panel {
+    display: none;
+}
+
+#toolbox_image {
+    /*padding: 30px;*/
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-file-panel span {
+    width: 70px;
+    height: 30px;
+    background-color: #EEE;
+    margin-top: 30px;
+}
+
+.upload-file-panel input {
+    display: block;
+    width: 150px;
+    height: 2em;
+}
+
+#toolbox_image:hover .upload-file-panel {
+    display: block;
+    position: fixed;
+    top: 20.2%;
+    left: 205px;
+    width: 300px;
+    background: #DDD;
+    height: 150px;
+    padding: 30px 50px;
 }

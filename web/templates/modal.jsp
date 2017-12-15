@@ -106,8 +106,14 @@
                     <span id="toolbox_italic" class="tools" onclick="insert_at_cursor(field, '[i]', '[/i]')"><i class="fa fa-italic"></i></span>
                     <span id="toolbox_underline" class="tools" onclick="insert_at_cursor(field, '[u]', '[/u]')"><i class="fa fa-underline"></i></span>
                     <!-- todo -->
-                    <span id="toolbox_image" class="tools" onclick=""><i class="fa fa-file-image-o"></i></span>
-                    <span id="toolbox_emoticon" class="tools">
+                    <span id="toolbox_image" class="tools" style="cursor: default;">
+                        <i class="fa fa-file-image-o"></i>
+                        <span class="upload-file-panel">
+                            <input id="upload_file_input" type="file" accept="image/*">
+                            <span class="modal-submit" onclick="upload_file_submit()">提交</span>
+                        </span>
+                    </span>
+                    <span id="toolbox_emoticon" class="tools" style="cursor: default;">
                         <i class="fa fa-smile-o"></i>
                         <span class="emoticon-panel">
                             <!-- insert emoticons with js -->
@@ -121,6 +127,8 @@
         </div>
     </div>
 </div>
+
+
 <script>
     let field = Sizzle('#comment_input_content')[0];
     init_emoticons();

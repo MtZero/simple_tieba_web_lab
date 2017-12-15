@@ -81,10 +81,6 @@
                     }
                     break;
 
-                case "upload_avatar":
-                    //todo
-                    break;
-
                 case "delete_user":  // 删除用户
                     user = gson.fromJson(data, Json.User.class);
                     if (DatabaseAccess.checkToken(token)) {
@@ -169,6 +165,7 @@
                 case "add_comment":
                     if (DatabaseAccess.checkToken(token)) {
                         comment = gson.fromJson(data, Json.Comment.class);
+                        comment.uid = DatabaseAccess.getUidByUsername(token.username);
                         Long cid = DatabaseAccess.addComment(comment);
                         if (cid != null) {
                             out.print(gson.toJson(new Json.Message()));

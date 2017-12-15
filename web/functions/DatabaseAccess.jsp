@@ -539,7 +539,7 @@
             Long pid = comment.pid;
             Long uid = comment.uid;
             Long r_floor = comment.r_floor;
-            String c_content = comment.c_content;
+            String c_content = SiteUtils.HtmlFilter(comment.c_content);
             String c_datetime = simpleDateFormat.format(new Date());
             if (pid == null || uid == null || c_content == null) return null;
             PreparedStatement preparedStatement;
@@ -570,12 +570,26 @@
                     Long current_p_floor = getFloorsByPid(pid);
                     if (r_floor >= current_p_floor) return null;
                     preparedStatement =
-                            connection.prepareStatement("INSERT INTO `comments` (`pid`, `uid`, `c_content`, `c_datetime`, `r_floor`) VALUES (?, ?, ?, ?, ?)");
+                            connection.prepareStatement("INSERT INTO `comments` (`pid`, `uid`, `c_content`, `c_datetime`, `r_floor`) VALUES (?, ?, ?, ?, ?)",
+                                    Statement.RETURN_GENERATED_KEYS);
                     preparedStatement.setLong(1, pid);
                     preparedStatement.setLong(2, uid);
                     preparedStatement.setString(3, c_content);
                     preparedStatement.setString(4, c_datetime);
                     preparedStatement.setLong(5, r_floor);
+                    Integer affectedRows = preparedStatement.executeUpdate();
+                    if (affectedRows > 0) {
+                        resultSet = preparedStatement.getGeneratedKeys();
+                        if (resultSet.next()) {
+                            Long cid = resultSet.getLong(1);
+                            resultSet.close();
+                            preparedStatement.close();
+                            return cid;
+                        }
+                    } else {
+                        preparedStatement.close();
+                        return null;
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

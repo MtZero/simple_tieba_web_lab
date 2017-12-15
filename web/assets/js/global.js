@@ -115,7 +115,6 @@ async function login(username = undefined, password = undefined) {
         let uj = await ur.json();
         let avatar_path = uj.data.avatar;
         let role = uj.data.role;
-        console.log(avatar_path);
         setCookie("avatar_path", avatar_path);
         setCookie("role", role);
         Sizzle("#when_guest")[0].setAttribute("style", "display: none;");
@@ -198,11 +197,29 @@ async function change_avatar_submit() {
         Sizzle("#user_avatar")[0].setAttribute("src", avatar_prefix + getCookie("avatar_path"));
         alert("修改成功！");
         Sizzle("#change_avatar_modal")[0].setAttribute("hidden", "");
-
+        Sizzle("#change_avatar")[0].value = "";
     } else {
         alert("修改失败！");
     }
-    console.log(j);
+}
+
+async function upload_file_submit() {
+    let data = new FormData();
+    let file = Sizzle("#upload_file_input")[0].files[0];
+    data.append("file", file);
+    let r = await fetch("functions/UploadFile.jsp", {
+        method: "POST",
+        headers: {"token": JSON.stringify(token)},
+        body: data
+    });
+    let j = await r.json();
+    if (j.state === "0") {
+        let filename = j.data.filename;
+        insert_at_cursor(field, "[img]" + filename + "[/img]");
+        Sizzle("#upload_file_input")[0].value = 0;
+    } else {
+        alert("上传失败！");
+    }
 }
 
 function bbcode_translate(str) {
@@ -236,8 +253,6 @@ function insert_at_cursor(field, insert_value_st = "", insert_value_ed = "") {
             end_pos = t;
         }
 
-        console.log(insert_value_st, insert_value_ed);
-
         let scroll_top = field.scrollTop;
 
         field.value = field.value.substring(0, start_pos) +
@@ -259,7 +274,7 @@ function init_emoticons() {
     let panels = Sizzle(".emoticon-panel");
     for (let i = 0; i < panels.length; i++) {
         for (let j = 1; j <= 50; j++) {
-            panels[i].innerHTML += "<span class='emoticons emo-" + j + "' onclick='insert_at_cursor(field, \"[emo]" + j + "[/emo]\")'></span>";
+            panels[i].innerHTML += "<span class='emoticons emo-" + j + "' onclick='insert_at_cursor(field, \"[emo]" + j + "[/emo]\")' style='cursor: pointer;'></span>";
         }
     }
 }
