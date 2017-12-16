@@ -50,6 +50,7 @@
         public static Long addUser(String username, String password) {
             if (username == null || password == null) return null;
             if (username.equals("")) return null;
+            username = SiteUtils.HtmlFilter(username);
             try {
                 PreparedStatement preparedStatement =
                         connection.prepareStatement("INSERT INTO `users` (`username`, `password`) VALUES (?, ?)",

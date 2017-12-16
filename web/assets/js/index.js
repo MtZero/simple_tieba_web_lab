@@ -16,7 +16,7 @@ async function load_new_post(datetime = earliest_datetime, limit = null) {
         for (let i = 0; i < len; i++) {
             Sizzle("#posts")[0].innerHTML += format_post_node(data[i]);
         }
-        if (len > 0) earliest_datetime = data[len-1].r_datetime;
+        if (len > 0) earliest_datetime = data[len - 1].r_datetime;
     }
 }
 
@@ -27,6 +27,11 @@ function format_post_node(data) {
     let title = data.p_title;
     let content = bbcode_translate_without_img(data.p_content);
     let floor = data.p_floor;
+    let return_html = "";
+    // 管理员删除功能，很不优雅的实现
+    if (token !== undefined) if (token.username !== undefined) if (token.username === "admin") {
+        return_html = "<span class='delete-comment' onclick='delete_post(" + id + ")'><i class='fa fa-trash'></i></span>"
+    }
     let ret =
         '    <div id="post_outer_' + id + '" class="post-outer panel">\n' +
         '        <div id="post_title_' + id + '" class="post-title">\n' +
@@ -47,6 +52,7 @@ function format_post_node(data) {
         '            <span id="post_last_reply_' + id + '">' + r_datetime + '</span>&nbsp;&nbsp;\n' +
         '            <i class="fa fa-comments"></i>\n' +
         '            <span id="post_floor_' + id + '">' + floor + '</span>\n' +
+        return_html +
         '        </div>\n' +
         '    </div>\n';
     return ret;
@@ -79,5 +85,21 @@ async function write_new_post_submit() {
         location.reload(true);
     } else {
         alert("发表失败！");
+    }
+}
+
+async function delete_post(pid) {
+    if (confirm("确认要删除帖子吗？")) {
+        let r = await fetch("functions/Interface.jsp?intent=delete_post", {
+            method: "POST",
+            headers: {"token": JSON.stringify(token)},
+            body: JSON.stringify({"pid": pid})
+        });
+        let j = await r.json();
+        if (j.state === "0") {
+            location.reload(true);
+        } else {
+            alert("删除失败！");
+        }
     }
 }

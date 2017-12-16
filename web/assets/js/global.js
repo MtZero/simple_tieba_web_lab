@@ -93,6 +93,8 @@ function logout() {
         Sizzle("#user_avatar")[0].setAttribute("src", avatar_prefix + getCookie("avatar_path"));
         Sizzle("#user_name")[0].innerHTML = "未登录";
         Sizzle("#user_avatar")[0].removeAttribute("style");
+        // 刷新一下
+        location.reload(true);
     }
 }
 
@@ -131,6 +133,8 @@ async function login(username = undefined, password = undefined) {
         Sizzle("#login_username")[0].value = "";
         Sizzle("#login_password")[0].value = "";
         Sizzle("#user_avatar")[0].setAttribute("style", "cursor: pointer;");
+        // 刷新一下
+        location.reload(true);
     } else {
         alert("帐号或密码不正确！");
     }

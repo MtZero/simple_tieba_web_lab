@@ -63,12 +63,15 @@ function format_comment(data) {
     let c_datetime = data.c_datetime;
     let c_state = data.c_state;
     let username = data.username;
-    let return_html;
-    //todo 管理员删除功能
+    let return_html = "";
+    // 管理员删除功能，很不优雅的实现
+    if (token !== undefined) if (token.username !== undefined) if (token.username === "admin") {
+        return_html = "<span class='delete-comment' onclick='delete_comment("+cid+")'><i class='fa fa-trash'></i></span>"
+    }
     if (r_floor === 0) {
-        return_html = '<span class="comment-floor">' + '#' + c_floor + '</span>&nbsp;&nbsp;\n';
+        return_html += '<span class="comment-floor">' + '#' + c_floor + '</span>&nbsp;&nbsp;\n';
     } else {
-        return_html = '<span class="comment-floor">' + '#' + c_floor + ' → #' + r_floor + '</span>&nbsp;&nbsp;\n';
+        return_html += '<span class="comment-floor">' + '#' + c_floor + ' → #' + r_floor + '</span>&nbsp;&nbsp;\n';
     }
     let ret =
         '    <div id="comment_outer_' + cid + '" class="comment-outer panel">\n' +
@@ -123,5 +126,21 @@ async function write_new_comment_submit(pid = null, r_floor = null) {
         location.reload(true);
     } else {
         alert("回复失败！");
+    }
+}
+
+async function delete_comment(cid) {
+    if (confirm("确认要删除评论吗？")) {
+        let r = await fetch("functions/Interface.jsp?intent=delete_comment", {
+            method: "POST",
+            headers: {"token": JSON.stringify(token)},
+            body: JSON.stringify({"cid": cid})
+        });
+        let j = await r.json();
+        if (j.state === "0") {
+            location.reload(true);
+        } else {
+            alert("删除失败！");
+        }
     }
 }
