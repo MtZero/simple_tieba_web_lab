@@ -36,12 +36,23 @@
         </div>
         <div class="comment-outer panel">
             <div class="comment-content">
-                <h1>感谢</h1>
+                <h1 class="shake shake-constant--hover">感谢</h1>
                 <ul>
                     <li>gson: <a href="https://github.com/google/gson" target="_blank">https://github.com/google/gson</a></li>
                     <li>sizzle: <a href="https://github.com/jquery/sizzle" target="_blank">https://github.com/jquery/sizzle</a></li>
                     <li>csshake: <a href="https://github.com/elrumordelaluz/csshake" target="_blank">https://github.com/elrumordelaluz/csshake</a></li>
+                    <li>本站: <a href="https://github.com/MtZero/simple_tieba_web_lab" target="_blank">https://github.com/MtZero/simple_tieba_web_lab</a></li>
+                    <li>阿威: <a href="https://github.com/Awille">https://github.com/Awille</a></li>
+                    <li>Terry: <a href="https://github.com/bazingaterry" target="_blank">https://github.com/bazingaterry</a></li>
                 </ul>
+            </div>
+        </div>
+        <div class="comment-outer panel">
+            <div class="comment-content">
+                <h1 class="shake shake-constant--hover">许可</h1>
+                <p>本站所有引用库，遵循所引用版本发行时的许可。</p>
+                <p>本站源码采用 MIT 许可。</p>
+                <p>本站内容采用 CC BY-NC-SA 4.0 许可。</p>
             </div>
         </div>
     </div>
