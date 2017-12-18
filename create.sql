@@ -11,7 +11,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`uid`,`username`),
   UNIQUE KEY `uid_UNIQUE` (`uid`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 
 
@@ -35,7 +35,7 @@ CREATE TABLE `posts` (
   KEY `posts2_idx` (`r_uid`),
   KEY `datetime` (`r_datetime`,`p_datetime`),
   CONSTRAINT `posts2` FOREIGN KEY (`r_uid`) REFERENCES `users` (`uid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `comments` (
   `cid` int(11) NOT NULL AUTO_INCREMENT,
@@ -51,7 +51,7 @@ CREATE TABLE `comments` (
   KEY `pid_idx` (`pid`),
   KEY `comments_idx` (`uid`),
   CONSTRAINT `comments` FOREIGN KEY (`uid`) REFERENCES `users` (`uid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 DELIMITER $$
 USE `tieba`$$
