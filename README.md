@@ -1,1 +1,3 @@
-# web_lab_final_term
+# Simple tieba
+A final-term project of Web Application course, SDCS, SYSU.
+Implemented in JSP.
